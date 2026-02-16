@@ -1,7 +1,12 @@
 <script lang="ts">
-  import { APIError } from "better-auth/api";
+  import { APIError } from "better-auth";
+  import { goto } from "$app/navigation";
+  import { resolve } from "$app/paths";
   import { auth } from "$lib/auth/client";
   import { delay } from "$lib/utils";
+  import type { PageProps } from "./$types";
+
+  let { data }: PageProps = $props();
 
   let isSignIn = $state(false);
 
@@ -18,7 +23,11 @@
 
       if (error) {
         console.error("Could not sign in");
+
+        return;
       }
+
+      await goto(resolve("/dashboard"));
     } catch (error) {
       if (error instanceof APIError) {
         console.error(error.message);
