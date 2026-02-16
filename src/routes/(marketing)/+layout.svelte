@@ -1,8 +1,11 @@
 <script lang="ts">
   import type { LayoutProps } from "./$types";
-  import "./layout.css";
 
   let { data, children }: LayoutProps = $props();
 </script>
 
-{@render children()}
+<div class="container">
+  <main>
+    {@render children()}
+  </main>
+</div>
