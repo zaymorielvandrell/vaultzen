@@ -1,51 +1,29 @@
 <script lang="ts">
-  import { APIError } from "better-auth";
-  import { goto } from "$app/navigation";
-  import { resolve } from "$app/paths";
-  import { auth } from "$lib/auth/client";
-  import { delay } from "$lib/utils";
+  import { Bookmark } from "@lucide/svelte";
+  import AppSidebar from "$lib/components/app-sidebar.svelte";
+  import { Button } from "$lib/components/ui/button";
+  import * as Sidebar from "$lib/components/ui/sidebar";
   import type { LayoutProps } from "./$types";
 
   let { data, children }: LayoutProps = $props();
-
-  let isSignOut = $state(false);
-
-  const handleSignOut = async () => {
-    isSignOut = true;
-
-    await delay();
-
-    try {
-      const { error } = await auth.signOut();
-
-      if (error) {
-        console.error("Could not sign out");
-
-        return;
-      }
-
-      await goto(resolve("/sign-in"));
-    } catch (error) {
-      if (error instanceof APIError) {
-        console.error(error.message);
-      }
-    } finally {
-      isSignOut = false;
-    }
-  };
 </script>
 
-<div>
-  <header>
-    <button type="button" onclick={handleSignOut}>
-      {#if isSignOut}
-        Loading...
-      {:else}
-        Sign out
-      {/if}
-    </button>
-  </header>
-  <main>
-    {@render children()}
-  </main>
-</div>
+<Sidebar.Provider style="--sidebar-width: 18rem; --sidebar-width-mobile: 18rem;">
+  <AppSidebar {data} />
+  <div class="w-full px-4 sm:px-6 md:px-8 lg:px-10">
+    <header class="flex min-h-12 w-full items-center py-2">
+      <div class="inline-flex w-1/2 items-center justify-start">
+        <Sidebar.Trigger />
+      </div>
+      <div class="inline-flex w-1/2 items-center justify-end">
+        <Button>
+          <Bookmark />
+          Add Bookmark
+        </Button>
+      </div>
+    </header>
+    <main class="py-4">
+      {@render children()}
+    </main>
+  </div>
+</Sidebar.Provider>

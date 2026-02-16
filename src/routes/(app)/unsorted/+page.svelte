@@ -5,5 +5,5 @@
 </script>
 
 <div>
-  <p>Hi, {data.user.name}!</p>
+  <p>Unsorted</p>
 </div>
