@@ -21,8 +21,8 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       '@lucide/svelte':
-        specifier: ^0.564.0
-        version: 0.564.0(svelte@5.51.2)
+        specifier: ^0.561.0
+        version: 0.561.0(svelte@5.51.2)
       '@sveltejs/adapter-vercel':
         specifier: ^6.3.1
         version: 6.3.1(@sveltejs/kit@2.52.0(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.51.2)(vite@7.3.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)))(svelte@5.51.2)(typescript@5.9.3)(vite@7.3.1(@types/node@24.10.13)(jiti@2.6.1)(lightningcss@1.30.2)))(rollup@4.57.1)
@@ -783,8 +783,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@lucide/svelte@0.564.0':
-    resolution: {integrity: sha512-jODK/wHX3lKi1CsLgx9wXspsDQ5/WbsNmBqecdTCbaH1Cy3C/n2g3WM1a59sokjq+81eZDFUi/7Yg4rVI3kyow==}
+  '@lucide/svelte@0.561.0':
+    resolution: {integrity: sha512-vofKV2UFVrKE6I4ewKJ3dfCXSV6iP6nWVmiM83MLjsU91EeJcEg7LoWUABLp/aOTxj1HQNbJD1f3g3L0JQgH9A==}
     peerDependencies:
       svelte: ^5
 
@@ -2803,7 +2803,7 @@ snapshots:
   '@libsql/win32-x64-msvc@0.5.22':
     optional: true
 
-  '@lucide/svelte@0.564.0(svelte@5.51.2)':
+  '@lucide/svelte@0.561.0(svelte@5.51.2)':
     dependencies:
       svelte: 5.51.2
 
