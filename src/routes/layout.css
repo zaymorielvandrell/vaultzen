@@ -136,3 +136,27 @@
     @apply size-4;
   }
 }
+
+@layer components {
+  .dashboard-typography {
+    & h1:not(.not-typography *) {
+      @apply mt-4 text-2xl font-semibold tracking-tight first:mt-0;
+    }
+
+    & h2:not(.not-typography *) {
+      @apply mt-4 text-xl font-semibold tracking-tight first:mt-0;
+    }
+
+    & h3:not(.not-typography *) {
+      @apply mt-4 text-lg font-semibold tracking-tight first:mt-0;
+    }
+
+    & h4:not(.not-typography *) {
+      @apply mt-4 text-base font-semibold tracking-tight first:mt-0;
+    }
+
+    & p:not(.not-typography *) {
+      @apply mt-2 leading-7 first:mt-0;
+    }
+  }
+}

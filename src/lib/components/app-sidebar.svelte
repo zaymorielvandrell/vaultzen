@@ -27,26 +27,28 @@
   import { Spinner } from "$lib/components/ui/spinner";
   import { Textarea } from "$lib/components/ui/textarea";
   import { createCollectionSchema, type CreateCollectionSchema } from "$lib/schemas/collection";
-  import type { user } from "$lib/server/db/schema";
-  import { delay } from "$lib/utils";
+  import type { collection, user } from "$lib/server/db/schema";
 
   interface Props {
     data: {
       user: Omit<InferSelectModel<typeof user>, "image"> & {
         image?: string | null | undefined;
       };
+      collections: InferSelectModel<typeof collection>[];
       createCollectionForm: SuperValidated<Infer<CreateCollectionSchema>>;
     };
   }
 
   let { data }: Props = $props();
 
+  let isLoading = $state(true);
+  let isCreateCollectionDialogOpen = $state(false);
+  let isSignOut = $state(false);
+
   const items = [
     { title: "All Bookmarks", url: "/dashboard", icon: GalleryVerticalEnd },
     { title: "Unsorted", url: "/unsorted", icon: Inbox }
   ] as const;
-
-  let isCreateCollectionDialogOpen = $state(false);
 
   const form = superForm(data.createCollectionForm, {
     id: "create-collection-form",
@@ -64,20 +66,8 @@
 
   const { form: formData, submitting, enhance } = form;
 
-  const collections = [
-    { title: "Collection #1", url: "/dashboard", icon: Folder },
-    { title: "Collection #2", url: "/dashboard", icon: Folder },
-    { title: "Collection #3", url: "/dashboard", icon: Folder },
-    { title: "Collection #4", url: "/dashboard", icon: Folder },
-    { title: "Collection #5", url: "/dashboard", icon: Folder }
-  ] as const;
-
-  let isSignOut = $state(false);
-
   const handleSignOut = async () => {
     isSignOut = true;
-
-    await delay();
 
     try {
       const { error } = await auth.signOut();
@@ -97,6 +87,12 @@
       isSignOut = false;
     }
   };
+
+  $effect(() => {
+    if (data.collections) {
+      isLoading = false;
+    }
+  });
 </script>
 
 <Sidebar.Root>
@@ -128,18 +124,26 @@
       </Sidebar.GroupAction>
       <Sidebar.GroupContent>
         <Sidebar.Menu>
-          {#each collections as collection (collection.title)}
-            <Sidebar.MenuItem>
-              <Sidebar.MenuButton>
-                {#snippet child({ props })}
-                  <a href={resolve(collection.url)} {...props}>
-                    <collection.icon />
-                    <span>{collection.title}</span>
-                  </a>
-                {/snippet}
-              </Sidebar.MenuButton>
-            </Sidebar.MenuItem>
-          {/each}
+          {#if isLoading}
+            {#each Array.from({ length: 5 }) as _, index (index)}
+              <Sidebar.MenuItem>
+                <Sidebar.MenuSkeleton showIcon />
+              </Sidebar.MenuItem>
+            {/each}
+          {:else}
+            {#each data.collections as collection (collection.id)}
+              <Sidebar.MenuItem>
+                <Sidebar.MenuButton>
+                  {#snippet child({ props })}
+                    <a href={resolve(`/collection/${collection.slug}`)} {...props}>
+                      <Folder />
+                      <span>{collection.name}</span>
+                    </a>
+                  {/snippet}
+                </Sidebar.MenuButton>
+              </Sidebar.MenuItem>
+            {/each}
+          {/if}
         </Sidebar.Menu>
       </Sidebar.GroupContent>
     </Sidebar.Group>
