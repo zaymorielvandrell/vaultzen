@@ -1,12 +1,12 @@
 <script lang="ts">
   import { APIError } from "better-auth";
+  import { toast } from "svelte-sonner";
   import { goto } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { auth } from "$lib/auth/client";
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
   import { Spinner } from "$lib/components/ui/spinner";
-  import { delay } from "$lib/utils";
   import type { PageProps } from "./$types";
 
   let { data }: PageProps = $props();
@@ -16,8 +16,6 @@
   const handleSignIn = async () => {
     isSignIn = true;
 
-    await delay();
-
     try {
       const { error } = await auth.signIn.social({
         provider: "github",
@@ -25,7 +23,7 @@
       });
 
       if (error) {
-        console.error("Could not sign in");
+        toast.error("Could not sign in");
 
         return;
       }
@@ -33,7 +31,7 @@
       await goto(resolve("/dashboard"));
     } catch (error) {
       if (error instanceof APIError) {
-        console.error(error.message);
+        toast.error(error.message);
       }
     } finally {
       isSignIn = false;
@@ -62,7 +60,7 @@
       Continue with GitHub
     </Button>
   </Card.Content>
-  <Card.Footer class="justify-center border-t">
+  <Card.Footer class="justify-center border-t text-center">
     <p class="text-xs text-pretty text-muted-foreground">
       By continuing, you agree to our Terms and Privacy Policy.
     </p>

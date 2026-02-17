@@ -8,18 +8,18 @@
 
   let { data }: PageProps = $props();
 
-  let isLoading = $state(true);
+  let isCollection = $state(true);
 
   $effect(() => {
     if (data.collection) {
-      isLoading = false;
+      isCollection = false;
     }
   });
 </script>
 
 <div class="flex flex-col gap-4">
   <div class="flex items-center justify-between gap-2">
-    {#if isLoading}
+    {#if isCollection}
       <div>
         <Skeleton class="h-8 w-60" />
         <Skeleton class="mt-2 h-5 w-80" />

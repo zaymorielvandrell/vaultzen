@@ -41,7 +41,7 @@
 
   let { data }: Props = $props();
 
-  let isLoading = $state(true);
+  let isCollections = $state(true);
   let isCreateCollectionDialogOpen = $state(false);
   let isSignOut = $state(false);
 
@@ -50,6 +50,7 @@
     { title: "Unsorted", url: "/unsorted", icon: Inbox }
   ] as const;
 
+  // svelte-ignore state_referenced_locally
   const form = superForm(data.createCollectionForm, {
     id: "create-collection-form",
     validators: zod4Client(createCollectionSchema),
@@ -73,7 +74,7 @@
       const { error } = await auth.signOut();
 
       if (error) {
-        console.error("Could not sign out");
+        toast.error("Could not sign out");
 
         return;
       }
@@ -81,7 +82,7 @@
       await goto(resolve("/sign-in"));
     } catch (error) {
       if (error instanceof APIError) {
-        console.error(error.message);
+        toast.error(error.message);
       }
     } finally {
       isSignOut = false;
@@ -90,7 +91,7 @@
 
   $effect(() => {
     if (data.collections) {
-      isLoading = false;
+      isCollections = false;
     }
   });
 </script>
@@ -124,7 +125,7 @@
       </Sidebar.GroupAction>
       <Sidebar.GroupContent>
         <Sidebar.Menu>
-          {#if isLoading}
+          {#if isCollections}
             {#each Array.from({ length: 5 }) as _, index (index)}
               <Sidebar.MenuItem>
                 <Sidebar.MenuSkeleton showIcon />
