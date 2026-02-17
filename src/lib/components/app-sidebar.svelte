@@ -2,6 +2,9 @@
   import { APIError } from "better-auth";
   import type { InferSelectModel } from "drizzle-orm";
   import { charAt, toUpperCase } from "string-ts";
+  import { toast } from "svelte-sonner";
+  import { superForm, type Infer, type SuperValidated } from "sveltekit-superforms";
+  import { zod4Client } from "sveltekit-superforms/adapters";
   import {
     ChevronsUpDown,
     Folder,
@@ -15,9 +18,15 @@
   import { resolve } from "$app/paths";
   import { auth } from "$lib/auth/client";
   import * as Avatar from "$lib/components/ui/avatar";
+  import { Button, buttonVariants } from "$lib/components/ui/button";
+  import * as Dialog from "$lib/components/ui/dialog";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
+  import * as Form from "$lib/components/ui/form";
+  import { Input } from "$lib/components/ui/input";
   import * as Sidebar from "$lib/components/ui/sidebar";
   import { Spinner } from "$lib/components/ui/spinner";
+  import { Textarea } from "$lib/components/ui/textarea";
+  import { createCollectionSchema, type CreateCollectionSchema } from "$lib/schemas/collection";
   import type { user } from "$lib/server/db/schema";
   import { delay } from "$lib/utils";
 
@@ -26,6 +35,7 @@
       user: Omit<InferSelectModel<typeof user>, "image"> & {
         image?: string | null | undefined;
       };
+      createCollectionForm: SuperValidated<Infer<CreateCollectionSchema>>;
     };
   }
 
@@ -35,6 +45,24 @@
     { title: "All Bookmarks", url: "/dashboard", icon: GalleryVerticalEnd },
     { title: "Unsorted", url: "/unsorted", icon: Inbox }
   ] as const;
+
+  let isCreateCollectionDialogOpen = $state(false);
+
+  const form = superForm(data.createCollectionForm, {
+    id: "create-collection-form",
+    validators: zod4Client(createCollectionSchema),
+    onUpdated: ({ form }) => {
+      if (form.valid) {
+        isCreateCollectionDialogOpen = false;
+      }
+
+      if (form.message) {
+        toast[form.message.type](form.message.text);
+      }
+    }
+  });
+
+  const { form: formData, submitting, enhance } = form;
 
   const collections = [
     { title: "Collection #1", url: "/dashboard", icon: Folder },
@@ -94,7 +122,7 @@
     </Sidebar.Group>
     <Sidebar.Group>
       <Sidebar.GroupLabel>Your Collections</Sidebar.GroupLabel>
-      <Sidebar.GroupAction>
+      <Sidebar.GroupAction onclick={() => (isCreateCollectionDialogOpen = true)}>
         <Plus />
         <span class="sr-only">Create Collection</span>
       </Sidebar.GroupAction>
@@ -179,3 +207,50 @@
     </Sidebar.Menu>
   </Sidebar.Footer>
 </Sidebar.Root>
+
+<Dialog.Root bind:open={isCreateCollectionDialogOpen}>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>New Collection</Dialog.Title>
+      <Dialog.Description>
+        Group your bookmarks into collections to stay organized.
+      </Dialog.Description>
+    </Dialog.Header>
+    <form
+      id="create-collection-form"
+      class="flex flex-col gap-4"
+      action="/collection/create"
+      method="post"
+      use:enhance>
+      <Form.Field {form} name="name">
+        <Form.Control>
+          {#snippet children({ props })}
+            <Form.Label>Name</Form.Label>
+            <Input type="text" bind:value={$formData.name} {...props} />
+          {/snippet}
+        </Form.Control>
+        <Form.Description>A memorable name for this collection.</Form.Description>
+        <Form.FieldErrors />
+      </Form.Field>
+      <Form.Field {form} name="description">
+        <Form.Control>
+          {#snippet children({ props })}
+            <Form.Label>Description</Form.Label>
+            <Textarea bind:value={$formData.description} {...props} />
+          {/snippet}
+        </Form.Control>
+        <Form.Description>What this collection is for (optional).</Form.Description>
+        <Form.FieldErrors />
+      </Form.Field>
+    </form>
+    <Dialog.Footer class="pt-4">
+      <Dialog.Close class={buttonVariants({ variant: "outline" })}>Cancel</Dialog.Close>
+      <Button type="submit" form="create-collection-form" disabled={$submitting}>
+        {#if $submitting}
+          <Spinner />
+        {/if}
+        Create Collection
+      </Button>
+    </Dialog.Footer>
+  </Dialog.Content>
+</Dialog.Root>

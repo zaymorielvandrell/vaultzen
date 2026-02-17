@@ -7,6 +7,13 @@ declare global {
       session?: Session;
     }
 
+    namespace Superforms {
+      type Message = {
+        type: "error" | "success";
+        text: string;
+      };
+    }
+
     // interface Error {}
     // interface Locals {}
     // interface PageData {}
