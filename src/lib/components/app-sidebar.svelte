@@ -71,7 +71,6 @@
 
       if (error) {
         toast.error("Could not sign out");
-
         return;
       }
 
