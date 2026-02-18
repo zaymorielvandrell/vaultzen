@@ -54,13 +54,9 @@
   const form = superForm(data.createCollectionForm, {
     id: "create-collection-form",
     validators: zod4Client(createCollectionSchema),
-    onUpdated: ({ form }) => {
-      if (form.valid) {
+    onResult: ({ result }) => {
+      if (result.type === "redirect") {
         isCreateCollectionDialogOpen = false;
-      }
-
-      if (form.message) {
-        toast[form.message.type](form.message.text);
       }
     }
   });
