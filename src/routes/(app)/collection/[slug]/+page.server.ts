@@ -10,12 +10,16 @@ import { delay } from "$lib/utils";
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async (event) => {
-  const { user } = await event.parent();
+  if (!event.locals.user) {
+    return error(401, "Unauthorized");
+  }
 
   const [existingCollection] = await db
     .select()
     .from(collection)
-    .where(and(eq(collection.userId, user.id), eq(collection.slug, event.params.slug)));
+    .where(
+      and(eq(collection.userId, event.locals.user.id), eq(collection.slug, event.params.slug))
+    );
 
   if (!existingCollection) {
     return error(404, "Collection not found");

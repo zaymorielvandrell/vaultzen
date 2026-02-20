@@ -5,7 +5,7 @@ import { redirect } from "@sveltejs/kit";
 import { createBookmarkSchema } from "$lib/schemas/bookmark";
 import { createCollectionSchema } from "$lib/schemas/collection";
 import { db } from "$lib/server/db";
-import { collection } from "$lib/server/db/schema";
+import { bookmark, collection } from "$lib/server/db/schema";
 import type { LayoutServerLoad } from "./$types";
 
 export const load: LayoutServerLoad = async (event) => {
@@ -15,6 +15,11 @@ export const load: LayoutServerLoad = async (event) => {
 
   return {
     user: event.locals.user,
+    bookmarks: await db
+      .select()
+      .from(bookmark)
+      .where(eq(bookmark.userId, event.locals.user.id))
+      .orderBy(desc(bookmark.updatedAt)),
     collections: await db
       .select()
       .from(collection)
