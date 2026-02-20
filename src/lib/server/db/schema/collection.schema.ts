@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { user } from "./auth.schema";
 
 export const collection = sqliteTable(
@@ -24,6 +24,6 @@ export const collection = sqliteTable(
   },
   (table) => [
     index("collection_user_id_idx").on(table.userId),
-    index("collection_user_id_slug_idx").on(table.userId, table.slug)
+    uniqueIndex("collection_user_id_slug_idx").on(table.userId, table.slug)
   ]
 );
