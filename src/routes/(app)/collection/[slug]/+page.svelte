@@ -2,6 +2,7 @@
   import { superForm } from "sveltekit-superforms";
   import { zod4Client } from "sveltekit-superforms/adapters";
   import { ChevronDown, Settings2, Trash2 } from "@lucide/svelte";
+  import BookmarkList from "$lib/components/bookmark-list.svelte";
   import * as AlertDialog from "$lib/components/ui/alert-dialog";
   import { Button, buttonVariants } from "$lib/components/ui/button";
   import * as ButtonGroup from "$lib/components/ui/button-group";
@@ -9,7 +10,6 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
   import * as Form from "$lib/components/ui/form";
   import { Input } from "$lib/components/ui/input";
-  import { Skeleton } from "$lib/components/ui/skeleton";
   import { Spinner } from "$lib/components/ui/spinner";
   import { Textarea } from "$lib/components/ui/textarea";
   import { deleteCollectionSchema, updateCollectionSchema } from "$lib/schemas/collection";
@@ -17,9 +17,17 @@
 
   let { data }: PageProps = $props();
 
-  let isCollection = $state(true);
   let isUpdateCollectionDialogOpen = $state(false);
   let isDeleteCollectionDialogOpen = $state(false);
+
+  const bookmarks = $derived(
+    data.collectionBookmarks.map((bookmark) => ({
+      ...bookmark,
+      host: new URL(bookmark.url).hostname
+    }))
+  );
+
+  const hasBookmarks = $derived(bookmarks.length > 0);
 
   // svelte-ignore state_referenced_locally
   const updateForm = superForm(data.updateCollectionForm, {
@@ -58,63 +66,57 @@
   } = deleteForm;
 
   $effect(() => {
-    if (data.collection) {
-      isCollection = false;
-    }
-
     updateReset({ data: data.updateCollectionForm.data });
     deleteReset({ data: data.deleteCollectionForm.data });
   });
 </script>
 
-<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-8">
   <div class="flex items-center justify-between gap-2">
-    {#if isCollection}
-      <div>
-        <Skeleton class="h-8 w-60" />
-        <Skeleton class="mt-2 h-5 w-80" />
-      </div>
-      <div>
-        <Skeleton class="h-9 w-18" />
-      </div>
-    {:else}
-      <div>
-        <h1>{data.collection.name}</h1>
-        <p class="text-muted-foreground">
-          {#if data.collection.description}
-            <span>{data.collection.description} •</span>
-          {/if}
-          <span>You have 99 bookmark(s) saved.</span>
-        </p>
-      </div>
-      <ButtonGroup.Root>
-        <Button variant="outline" size="icon" onclick={() => (isUpdateCollectionDialogOpen = true)}>
-          <Settings2 />
-          <span class="sr-only">Edit Collection</span>
-        </Button>
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
-            {#snippet child({ props })}
-              <Button {...props} variant="outline" size="icon">
-                <ChevronDown />
-                <span class="sr-only">Manage Collection</span>
-              </Button>
-            {/snippet}
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content align="end">
-            <DropdownMenu.Group>
-              <DropdownMenu.Item
-                variant="destructive"
-                onclick={() => (isDeleteCollectionDialogOpen = true)}>
-                <Trash2 />
-                Delete Collection
-              </DropdownMenu.Item>
-            </DropdownMenu.Group>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-      </ButtonGroup.Root>
-    {/if}
+    <div>
+      <h1>{data.collection.name}</h1>
+      <p class="text-muted-foreground">
+        {#if data.collection.description}
+          {data.collection.description} •
+        {/if}
+        You have {hasBookmarks ? bookmarks.length : 0} bookmark(s) saved.
+      </p>
+    </div>
+    <ButtonGroup.Root>
+      <Button variant="outline" size="icon" onclick={() => (isUpdateCollectionDialogOpen = true)}>
+        <Settings2 />
+        <span class="sr-only">Edit Collection</span>
+      </Button>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          {#snippet child({ props })}
+            <Button {...props} variant="outline" size="icon">
+              <ChevronDown />
+              <span class="sr-only">Manage Collection</span>
+            </Button>
+          {/snippet}
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content align="end">
+          <DropdownMenu.Group>
+            <DropdownMenu.Item
+              variant="destructive"
+              onclick={() => (isDeleteCollectionDialogOpen = true)}>
+              <Trash2 />
+              Delete Collection
+            </DropdownMenu.Item>
+          </DropdownMenu.Group>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    </ButtonGroup.Root>
   </div>
+  <BookmarkList
+    {bookmarks}
+    collections={data.collections}
+    updateBookmarkForm={data.updateBookmarkForm}
+    deleteBookmarkForm={data.deleteBookmarkForm}
+    hideHeader
+    emptyTitle="No Bookmarks"
+    emptyDescription="This collection doesn't have any bookmarks yet." />
 </div>
 
 <Dialog.Root bind:open={isUpdateCollectionDialogOpen}>

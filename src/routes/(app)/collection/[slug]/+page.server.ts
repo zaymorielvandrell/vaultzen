@@ -1,11 +1,12 @@
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { kebabCase } from "string-ts";
 import { fail, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { error, redirect } from "@sveltejs/kit";
+import { deleteBookmarkSchema, updateBookmarkSchema } from "$lib/schemas/bookmark";
 import { deleteCollectionSchema, updateCollectionSchema } from "$lib/schemas/collection";
 import { db } from "$lib/server/db";
-import { collection } from "$lib/server/db/schema";
+import { bookmark, collection } from "$lib/server/db/schema";
 import { delay } from "$lib/utils";
 import type { Actions, PageServerLoad } from "./$types";
 
@@ -27,11 +28,23 @@ export const load: PageServerLoad = async (event) => {
 
   return {
     collection: existingCollection,
+    updateBookmarkForm: await superValidate(zod4(updateBookmarkSchema)),
+    deleteBookmarkForm: await superValidate(zod4(deleteBookmarkSchema)),
     updateCollectionForm: await superValidate(
       { ...existingCollection, description: existingCollection.description || undefined },
       zod4(updateCollectionSchema)
     ),
-    deleteCollectionForm: await superValidate(existingCollection, zod4(deleteCollectionSchema))
+    deleteCollectionForm: await superValidate(existingCollection, zod4(deleteCollectionSchema)),
+    collectionBookmarks: await db
+      .select()
+      .from(bookmark)
+      .where(
+        and(
+          eq(bookmark.userId, event.locals.user.id),
+          eq(bookmark.collectionId, existingCollection.id)
+        )
+      )
+      .orderBy(desc(bookmark.updatedAt))
   };
 };
 

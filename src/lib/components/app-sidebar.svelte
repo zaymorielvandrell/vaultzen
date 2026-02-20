@@ -121,7 +121,7 @@
       <Sidebar.GroupContent>
         <Sidebar.Menu>
           {#if isCollections}
-            {#each Array.from({ length: 5 }) as _, index (index)}
+            {#each Array(6)}
               <Sidebar.MenuItem>
                 <Sidebar.MenuSkeleton showIcon />
               </Sidebar.MenuItem>

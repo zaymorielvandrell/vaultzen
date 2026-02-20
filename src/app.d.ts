@@ -7,6 +7,10 @@ declare global {
     host: string;
   };
 
+  type Collection = import("drizzle-orm").InferSelectModel<
+    typeof import("$lib/server/db/schema/collection.schema").collection
+  >;
+
   namespace App {
     interface Locals {
       user?: User;
