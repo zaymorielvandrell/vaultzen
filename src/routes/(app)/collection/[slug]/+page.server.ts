@@ -7,7 +7,6 @@ import { deleteBookmarkSchema, updateBookmarkSchema } from "$lib/schemas/bookmar
 import { deleteCollectionSchema, updateCollectionSchema } from "$lib/schemas/collection";
 import { db } from "$lib/server/db";
 import { bookmark, collection } from "$lib/server/db/schema";
-import { delay } from "$lib/utils";
 import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async (event) => {
@@ -52,8 +51,6 @@ export const actions: Actions = {
   update: async (event) => {
     const form = await superValidate(event, zod4(updateCollectionSchema));
 
-    await delay();
-
     if (!form.valid) {
       return fail(400, { form });
     }
@@ -73,8 +70,6 @@ export const actions: Actions = {
   },
   delete: async (event) => {
     const form = await superValidate(event, zod4(deleteCollectionSchema));
-
-    await delay();
 
     if (!form.valid) {
       return fail(400, { form });

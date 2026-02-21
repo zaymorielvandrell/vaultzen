@@ -4,7 +4,7 @@
   import type { LayoutProps } from "./$types";
   import "./layout.css";
 
-  let { data, children }: LayoutProps = $props();
+  let { children }: LayoutProps = $props();
 </script>
 
 <ModeWatcher />

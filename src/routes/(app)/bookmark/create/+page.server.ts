@@ -5,19 +5,12 @@ import { error, redirect } from "@sveltejs/kit";
 import { createBookmarkSchema } from "$lib/schemas/bookmark";
 import { db } from "$lib/server/db";
 import { bookmark, collection } from "$lib/server/db/schema";
-import { extractMetadata } from "$lib/server/metadata";
-import { delay } from "$lib/utils";
-import type { Actions, PageServerLoad } from "./$types";
-
-export const load: PageServerLoad = async () => {
-  return {};
-};
+import { extractMetadata } from "$lib/server/extract-metadata";
+import type { Actions } from "./$types";
 
 export const actions: Actions = {
   default: async (event) => {
     const form = await superValidate(event, zod4(createBookmarkSchema));
-
-    await delay();
 
     if (!form.valid) {
       return fail(400, { form });

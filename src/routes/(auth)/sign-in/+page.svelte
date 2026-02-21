@@ -7,9 +7,6 @@
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
   import { Spinner } from "$lib/components/ui/spinner";
-  import type { PageProps } from "./$types";
-
-  let { data }: PageProps = $props();
 
   let isSignIn = $state(false);
 
@@ -40,10 +37,8 @@
 
 <Card.Root class="w-full max-w-lg">
   <Card.Header class="text-center">
-    <Card.Title class="text-xl">Welcome to Vaultzen</Card.Title>
-    <Card.Description class="text-pretty">
-      Sign in with GitHub to save and organize your links.
-    </Card.Description>
+    <Card.Title class="text-xl">Welcome to VaultZen</Card.Title>
+    <Card.Description>Sign in with GitHub to save and organize your links.</Card.Description>
   </Card.Header>
   <Card.Content>
     <Button variant="outline" size="lg" class="w-full" disabled={isSignIn} onclick={handleSignIn}>
@@ -65,7 +60,7 @@
     </Button>
   </Card.Content>
   <Card.Footer class="justify-center border-t text-center">
-    <p class="text-xs text-pretty text-muted-foreground">
+    <p class="text-xs text-muted-foreground">
       By continuing, you agree to our Terms and Privacy Policy.
     </p>
   </Card.Footer>

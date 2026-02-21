@@ -59,7 +59,7 @@
 
   const collectionLabel = $derived(
     selectedCollectionId
-      ? (collectionsById[selectedCollectionId]?.name ?? "Choose a collection")
+      ? (collectionsById[selectedCollectionId].name ?? "Choose a collection")
       : "Unsorted"
   );
 
@@ -167,7 +167,7 @@
                 <Skeleton class="h-4 w-2/5" />
               </Card.Description>
               <Card.Action>
-                <Skeleton class="size-9" />
+                <Skeleton class="h-8 w-16" />
               </Card.Action>
             </Card.Header>
             <Card.Content>
@@ -202,7 +202,7 @@
                       size="icon-sm"
                       onclick={() => handleUpdateBookmarkDialogOpen(bookmark)}>
                       <Settings2Icon />
-                      <span class="sr-only">Update</span>
+                      <span class="sr-only">Update Bookmark</span>
                     </Button>
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger>

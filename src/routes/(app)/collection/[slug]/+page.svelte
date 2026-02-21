@@ -85,7 +85,7 @@
     <ButtonGroup.Root>
       <Button variant="outline" size="icon" onclick={() => (isUpdateCollectionDialogOpen = true)}>
         <Settings2Icon />
-        <span class="sr-only">Update</span>
+        <span class="sr-only">Update Collection</span>
       </Button>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>

@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
 
-const USER_AGENT = "Mozilla/5.0 (compatible; Vaultzen/1.0; +http://localhost:5173)";
+const USER_AGENT = "Mozilla/5.0 (compatible; VaultZen/1.0; +http://localhost:5173)";
 const FETCH_TIMEOUT = 10_000;
 const FALLBACK_TITLES = [
   "Title? What Title? We Don't Do That Here.",

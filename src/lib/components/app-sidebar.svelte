@@ -229,7 +229,7 @@
                 {:else}
                   <LogOutIcon />
                 {/if}
-                Sign out
+                Sign Out
               </DropdownMenu.Item>
             </DropdownMenu.Group>
           </DropdownMenu.Content>
