@@ -28,12 +28,15 @@ export const actions: Actions = {
 
     const slug = kebabCase(form.data.name);
 
-    await db.insert(collection).values({
-      userId: event.locals.user.id,
-      name: form.data.name,
-      slug,
-      description: form.data.description
-    });
+    await db
+      .insert(collection)
+      .values({
+        userId: event.locals.user.id,
+        name: form.data.name,
+        slug,
+        description: form.data.description
+      })
+      .onConflictDoNothing();
 
     return redirect(302, `/collection/${slug}`);
   }

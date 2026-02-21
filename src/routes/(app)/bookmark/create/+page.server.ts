@@ -29,14 +29,17 @@ export const actions: Actions = {
 
     const metadata = await extractMetadata(form.data.url);
 
-    await db.insert(bookmark).values({
-      userId: event.locals.user.id,
-      collectionId: form.data.collectionId,
-      url: form.data.url,
-      title: metadata.title,
-      description: metadata.description,
-      favicon: metadata.favicon
-    });
+    await db
+      .insert(bookmark)
+      .values({
+        userId: event.locals.user.id,
+        collectionId: form.data.collectionId,
+        url: form.data.url,
+        title: metadata.title,
+        description: metadata.description,
+        favicon: metadata.favicon
+      })
+      .onConflictDoNothing();
 
     if (form.data.collectionId) {
       const [existingCollection] = await db
