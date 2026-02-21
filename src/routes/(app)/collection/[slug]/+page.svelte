@@ -85,7 +85,7 @@
     <ButtonGroup.Root>
       <Button variant="outline" size="icon" onclick={() => (isUpdateCollectionDialogOpen = true)}>
         <Settings2 />
-        <span class="sr-only">Update Collection</span>
+        <span class="sr-only">Update</span>
       </Button>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
@@ -102,7 +102,7 @@
               variant="destructive"
               onclick={() => (isDeleteCollectionDialogOpen = true)}>
               <Trash2 />
-              Delete Collection
+              Delete
             </DropdownMenu.Item>
           </DropdownMenu.Group>
         </DropdownMenu.Content>

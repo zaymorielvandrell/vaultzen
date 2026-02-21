@@ -4,12 +4,13 @@
   import { superForm } from "sveltekit-superforms";
   import type { Infer, SuperValidated } from "sveltekit-superforms";
   import { zod4Client } from "sveltekit-superforms/adapters";
-  import { Bookmark, Ellipsis, Settings2, Trash2 } from "@lucide/svelte";
+  import { Bookmark, ChevronDown, Settings2, Trash2 } from "@lucide/svelte";
   import { resolve } from "$app/paths";
   import * as AlertDialog from "$lib/components/ui/alert-dialog";
   import * as Avatar from "$lib/components/ui/avatar";
   import { badgeVariants } from "$lib/components/ui/badge";
   import { Button, buttonVariants } from "$lib/components/ui/button";
+  import * as ButtonGroup from "$lib/components/ui/button-group";
   import * as Card from "$lib/components/ui/card";
   import * as Dialog from "$lib/components/ui/dialog";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
@@ -195,30 +196,35 @@
                 </Card.Title>
                 <Card.Description>{bookmark.host}</Card.Description>
                 <Card.Action>
-                  <DropdownMenu.Root>
-                    <DropdownMenu.Trigger>
-                      {#snippet child({ props })}
-                        <Button {...props} variant="ghost" size="icon">
-                          <Ellipsis />
-                          <span class="sr-only">Manage Bookmark</span>
-                        </Button>
-                      {/snippet}
-                    </DropdownMenu.Trigger>
-                    <DropdownMenu.Content align="end">
-                      <DropdownMenu.Group>
-                        <DropdownMenu.Item onclick={() => handleUpdateBookmarkDialogOpen(bookmark)}>
-                          <Settings2 />
-                          Update Bookmark
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Item
-                          variant="destructive"
-                          onclick={() => handleDeleteBookmarkDialogOpen(bookmark)}>
-                          <Trash2 />
-                          Delete Bookmark
-                        </DropdownMenu.Item>
-                      </DropdownMenu.Group>
-                    </DropdownMenu.Content>
-                  </DropdownMenu.Root>
+                  <ButtonGroup.Root>
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      onclick={() => handleUpdateBookmarkDialogOpen(bookmark)}>
+                      <Settings2 />
+                      <span class="sr-only">Update</span>
+                    </Button>
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger>
+                        {#snippet child({ props })}
+                          <Button {...props} variant="outline" size="icon-sm">
+                            <ChevronDown />
+                            <span class="sr-only">Manage Bookmark</span>
+                          </Button>
+                        {/snippet}
+                      </DropdownMenu.Trigger>
+                      <DropdownMenu.Content align="end">
+                        <DropdownMenu.Group>
+                          <DropdownMenu.Item
+                            variant="destructive"
+                            onclick={() => handleDeleteBookmarkDialogOpen(bookmark)}>
+                            <Trash2 />
+                            Delete
+                          </DropdownMenu.Item>
+                        </DropdownMenu.Group>
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+                  </ButtonGroup.Root>
                 </Card.Action>
               </Card.Header>
               <Card.Content>

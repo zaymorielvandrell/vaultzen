@@ -26,19 +26,16 @@
   import * as Sidebar from "$lib/components/ui/sidebar";
   import { Spinner } from "$lib/components/ui/spinner";
   import { Textarea } from "$lib/components/ui/textarea";
-  import type { CreateBookmarkSchema } from "$lib/schemas/bookmark";
   import { createCollectionSchema, type CreateCollectionSchema } from "$lib/schemas/collection";
   import { updateProfileSchema, type UpdateProfileSchema } from "$lib/schemas/profile";
-  import type { bookmark, collection, user } from "$lib/server/db/schema";
+  import type { collection, user } from "$lib/server/db/schema";
 
   interface Props {
     data: {
       user: Omit<InferSelectModel<typeof user>, "image"> & {
         image?: string | null | undefined;
       };
-      bookmarks: InferSelectModel<typeof bookmark>[];
       collections: InferSelectModel<typeof collection>[];
-      createBookmarkForm: SuperValidated<Infer<CreateBookmarkSchema>>;
       createCollectionForm: SuperValidated<Infer<CreateCollectionSchema>>;
       updateProfileForm: SuperValidated<Infer<UpdateProfileSchema>>;
     };
