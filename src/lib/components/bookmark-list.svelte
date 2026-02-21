@@ -25,7 +25,7 @@
   import type { DeleteBookmarkSchema, UpdateBookmarkSchema } from "$lib/schemas/bookmark";
 
   interface Props {
-    bookmarks: BookmarkWithHost[];
+    bookmarks: Bookmark[];
     collections: Collection[];
     updateBookmarkForm: SuperValidated<Infer<UpdateBookmarkSchema>>;
     deleteBookmarkForm: SuperValidated<Infer<DeleteBookmarkSchema>>;
@@ -99,7 +99,7 @@
     enhance: deleteEnhance
   } = deleteForm;
 
-  const handleUpdateBookmarkDialogOpen = (data: BookmarkWithHost) => {
+  const handleUpdateBookmarkDialogOpen = (data: Bookmark) => {
     selectedCollectionId = data.collectionId ?? "";
 
     updateReset({
@@ -115,7 +115,7 @@
     isUpdateBookmarkDialogOpen = true;
   };
 
-  const handleDeleteBookmarkDialogOpen = (data: BookmarkWithHost) => {
+  const handleDeleteBookmarkDialogOpen = (data: Bookmark) => {
     deleteReset({
       data: {
         id: data.id

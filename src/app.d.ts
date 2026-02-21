@@ -1,7 +1,7 @@
 import type { Session, User } from "better-auth";
 
 declare global {
-  type BookmarkWithHost = import("drizzle-orm").InferSelectModel<
+  type Bookmark = import("drizzle-orm").InferSelectModel<
     typeof import("$lib/server/db/schema/bookmark.schema").bookmark
   > & {
     host: string;
