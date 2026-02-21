@@ -26,16 +26,21 @@
   import * as Sidebar from "$lib/components/ui/sidebar";
   import { Spinner } from "$lib/components/ui/spinner";
   import { Textarea } from "$lib/components/ui/textarea";
+  import type { CreateBookmarkSchema } from "$lib/schemas/bookmark";
   import { createCollectionSchema, type CreateCollectionSchema } from "$lib/schemas/collection";
-  import type { collection, user } from "$lib/server/db/schema";
+  import { updateProfileSchema, type UpdateProfileSchema } from "$lib/schemas/profile";
+  import type { bookmark, collection, user } from "$lib/server/db/schema";
 
   interface Props {
     data: {
       user: Omit<InferSelectModel<typeof user>, "image"> & {
         image?: string | null | undefined;
       };
+      bookmarks: InferSelectModel<typeof bookmark>[];
       collections: InferSelectModel<typeof collection>[];
+      createBookmarkForm: SuperValidated<Infer<CreateBookmarkSchema>>;
       createCollectionForm: SuperValidated<Infer<CreateCollectionSchema>>;
+      updateProfileForm: SuperValidated<Infer<UpdateProfileSchema>>;
     };
   }
 
@@ -43,6 +48,7 @@
 
   let isCollections = $state(true);
   let isCreateCollectionDialogOpen = $state(false);
+  let isUpdateProfileDialogOpen = $state(false);
   let isSignOut = $state(false);
 
   const items = [
@@ -51,7 +57,7 @@
   ] as const;
 
   // svelte-ignore state_referenced_locally
-  const form = superForm(data.createCollectionForm, {
+  const createForm = superForm(data.createCollectionForm, {
     id: "create-collection-form",
     validators: zod4Client(createCollectionSchema),
     onResult: ({ result }) => {
@@ -61,7 +67,35 @@
     }
   });
 
-  const { form: formData, submitting, enhance } = form;
+  const { form: createFormData, submitting: createSubmitting, enhance: createEnhance } = createForm;
+
+  // svelte-ignore state_referenced_locally
+  const updateForm = superForm(data.updateProfileForm, {
+    id: "update-profile-form",
+    validators: zod4Client(updateProfileSchema),
+    onResult: ({ result }) => {
+      if (result.type === "success") {
+        isUpdateProfileDialogOpen = false;
+      }
+    }
+  });
+
+  const {
+    form: updateFormData,
+    submitting: updateSubmitting,
+    reset: updateReset,
+    enhance: updateEnhance
+  } = updateForm;
+
+  const handleUpdateProfileDialogOpen = () => {
+    updateReset({
+      data: {
+        name: data.user.name
+      }
+    });
+
+    isUpdateProfileDialogOpen = true;
+  };
 
   const handleSignOut = async () => {
     isSignOut = true;
@@ -188,7 +222,7 @@
                 </div>
               </DropdownMenu.Label>
               <DropdownMenu.Separator />
-              <DropdownMenu.Item>
+              <DropdownMenu.Item onclick={handleUpdateProfileDialogOpen}>
                 <UserCog />
                 Profile
               </DropdownMenu.Item>
@@ -221,22 +255,22 @@
       class="flex flex-col gap-4"
       action="/collection/create"
       method="post"
-      use:enhance>
-      <Form.Field {form} name="name">
+      use:createEnhance>
+      <Form.Field form={createForm} name="name">
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>Name</Form.Label>
-            <Input type="text" bind:value={$formData.name} {...props} />
+            <Input type="text" bind:value={$createFormData.name} {...props} />
           {/snippet}
         </Form.Control>
         <Form.Description>A memorable name for this collection.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
-      <Form.Field {form} name="description">
+      <Form.Field form={createForm} name="description">
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>Description</Form.Label>
-            <Textarea bind:value={$formData.description} {...props} />
+            <Textarea bind:value={$createFormData.description} {...props} />
           {/snippet}
         </Form.Control>
         <Form.Description>What this collection is for (optional).</Form.Description>
@@ -245,11 +279,41 @@
     </form>
     <Dialog.Footer class="pt-4">
       <Dialog.Close class={buttonVariants({ variant: "outline" })}>Cancel</Dialog.Close>
-      <Button type="submit" form="create-collection-form" disabled={$submitting}>
-        {#if $submitting}
+      <Button type="submit" form="create-collection-form" disabled={$createSubmitting}>
+        {#if $createSubmitting}
           <Spinner />
         {/if}
         Create Collection
+      </Button>
+    </Dialog.Footer>
+  </Dialog.Content>
+</Dialog.Root>
+
+<Dialog.Root bind:open={isUpdateProfileDialogOpen}>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Edit Profile</Dialog.Title>
+      <Dialog.Description>Manage your account settings.</Dialog.Description>
+    </Dialog.Header>
+    <form id="update-profile-form" action="/profile" method="post" use:updateEnhance>
+      <Form.Field form={updateForm} name="name">
+        <Form.Control>
+          {#snippet children({ props })}
+            <Form.Label>Name</Form.Label>
+            <Input type="text" bind:value={$updateFormData.name} {...props} />
+          {/snippet}
+        </Form.Control>
+        <Form.Description>Your display name.</Form.Description>
+        <Form.FieldErrors />
+      </Form.Field>
+    </form>
+    <Dialog.Footer class="pt-4">
+      <Dialog.Close class={buttonVariants({ variant: "outline" })}>Cancel</Dialog.Close>
+      <Button type="submit" form="update-profile-form" disabled={$updateSubmitting}>
+        {#if $updateSubmitting}
+          <Spinner />
+        {/if}
+        Save Changes
       </Button>
     </Dialog.Footer>
   </Dialog.Content>

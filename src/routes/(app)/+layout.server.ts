@@ -4,6 +4,7 @@ import { zod4 } from "sveltekit-superforms/adapters";
 import { redirect } from "@sveltejs/kit";
 import { createBookmarkSchema } from "$lib/schemas/bookmark";
 import { createCollectionSchema } from "$lib/schemas/collection";
+import { updateProfileSchema } from "$lib/schemas/profile";
 import { db } from "$lib/server/db";
 import { bookmark, collection } from "$lib/server/db/schema";
 import type { LayoutServerLoad } from "./$types";
@@ -26,6 +27,7 @@ export const load: LayoutServerLoad = async (event) => {
       .where(eq(collection.userId, event.locals.user.id))
       .orderBy(desc(collection.updatedAt)),
     createBookmarkForm: await superValidate(zod4(createBookmarkSchema)),
-    createCollectionForm: await superValidate(zod4(createCollectionSchema))
+    createCollectionForm: await superValidate(zod4(createCollectionSchema)),
+    updateProfileForm: await superValidate(zod4(updateProfileSchema))
   };
 };
