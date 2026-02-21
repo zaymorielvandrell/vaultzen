@@ -46,7 +46,7 @@
   });
 </script>
 
-<Sidebar.Provider style="--sidebar-width: 18rem; --sidebar-width-mobile: 18rem;">
+<Sidebar.Provider style="--sidebar-width: 20rem; --sidebar-width-mobile: 20rem;">
   <AppSidebar {data} />
   <div class="dashboard-typography w-full px-4 sm:px-6 md:px-8 lg:px-10">
     <header class="flex min-h-12 w-full items-center py-4">
