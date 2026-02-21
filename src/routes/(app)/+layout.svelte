@@ -1,7 +1,7 @@
 <script lang="ts">
   import { superForm } from "sveltekit-superforms";
   import { zod4Client } from "sveltekit-superforms/adapters";
-  import { Plus } from "@lucide/svelte";
+  import { PlusIcon } from "@lucide/svelte";
   import AppSidebar from "$lib/components/app-sidebar.svelte";
   import { Button, buttonVariants } from "$lib/components/ui/button";
   import * as Dialog from "$lib/components/ui/dialog";
@@ -55,7 +55,7 @@
       </div>
       <div class="inline-flex w-1/2 items-center justify-end">
         <Button onclick={() => (isCreateBookmarkDialogOpen = true)}>
-          <Plus />
+          <PlusIcon />
           Add Bookmark
         </Button>
       </div>

@@ -6,13 +6,13 @@
   import { superForm, type Infer, type SuperValidated } from "sveltekit-superforms";
   import { zod4Client } from "sveltekit-superforms/adapters";
   import {
-    ChevronsUpDown,
-    Folder,
-    GalleryVerticalEnd,
-    Inbox,
-    LogOut,
-    Plus,
-    UserCog
+    ChevronsUpDownIcon,
+    FolderIcon,
+    GalleryVerticalEndIcon,
+    InboxIcon,
+    LogOutIcon,
+    PlusIcon,
+    UserCogIcon
   } from "@lucide/svelte";
   import { goto } from "$app/navigation";
   import { resolve } from "$app/paths";
@@ -49,8 +49,8 @@
   let isSignOut = $state(false);
 
   const items = [
-    { title: "All Bookmarks", url: "/dashboard", icon: GalleryVerticalEnd },
-    { title: "Unsorted", url: "/unsorted", icon: Inbox }
+    { title: "All Bookmarks", url: "/dashboard", icon: GalleryVerticalEndIcon },
+    { title: "Unsorted", url: "/unsorted", icon: InboxIcon }
   ] as const;
 
   // svelte-ignore state_referenced_locally
@@ -146,7 +146,7 @@
     <Sidebar.Group>
       <Sidebar.GroupLabel>Your Collections</Sidebar.GroupLabel>
       <Sidebar.GroupAction onclick={() => (isCreateCollectionDialogOpen = true)}>
-        <Plus />
+        <PlusIcon />
         <span class="sr-only">Create Collection</span>
       </Sidebar.GroupAction>
       <Sidebar.GroupContent>
@@ -163,7 +163,7 @@
                 <Sidebar.MenuButton>
                   {#snippet child({ props })}
                     <a href={resolve(`/collection/${collection.slug}`)} {...props}>
-                      <Folder />
+                      <FolderIcon />
                       <span>{collection.name}</span>
                     </a>
                   {/snippet}
@@ -193,7 +193,7 @@
                   </Avatar.Root>
                 {/if}
                 {data.user.name}
-                <ChevronsUpDown class="ms-auto" />
+                <ChevronsUpDownIcon class="ms-auto" />
               </Sidebar.MenuButton>
             {/snippet}
           </DropdownMenu.Trigger>
@@ -220,14 +220,14 @@
               </DropdownMenu.Label>
               <DropdownMenu.Separator />
               <DropdownMenu.Item onclick={handleUpdateProfileDialogOpen}>
-                <UserCog />
+                <UserCogIcon />
                 Profile
               </DropdownMenu.Item>
               <DropdownMenu.Item variant="destructive" onclick={handleSignOut}>
                 {#if isSignOut}
                   <Spinner />
                 {:else}
-                  <LogOut />
+                  <LogOutIcon />
                 {/if}
                 Sign out
               </DropdownMenu.Item>

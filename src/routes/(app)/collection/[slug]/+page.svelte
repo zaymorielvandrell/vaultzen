@@ -1,7 +1,7 @@
 <script lang="ts">
   import { superForm } from "sveltekit-superforms";
   import { zod4Client } from "sveltekit-superforms/adapters";
-  import { ChevronDown, Settings2, Trash2 } from "@lucide/svelte";
+  import { ChevronDownIcon, Settings2Icon, Trash2Icon } from "@lucide/svelte";
   import BookmarkList from "$lib/components/bookmark-list.svelte";
   import * as AlertDialog from "$lib/components/ui/alert-dialog";
   import { Button, buttonVariants } from "$lib/components/ui/button";
@@ -84,14 +84,14 @@
     </div>
     <ButtonGroup.Root>
       <Button variant="outline" size="icon" onclick={() => (isUpdateCollectionDialogOpen = true)}>
-        <Settings2 />
+        <Settings2Icon />
         <span class="sr-only">Update</span>
       </Button>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
           {#snippet child({ props })}
             <Button {...props} variant="outline" size="icon">
-              <ChevronDown />
+              <ChevronDownIcon />
               <span class="sr-only">Manage Collection</span>
             </Button>
           {/snippet}
@@ -101,7 +101,7 @@
             <DropdownMenu.Item
               variant="destructive"
               onclick={() => (isDeleteCollectionDialogOpen = true)}>
-              <Trash2 />
+              <Trash2Icon />
               Delete
             </DropdownMenu.Item>
           </DropdownMenu.Group>

@@ -4,7 +4,7 @@
   import { superForm } from "sveltekit-superforms";
   import type { Infer, SuperValidated } from "sveltekit-superforms";
   import { zod4Client } from "sveltekit-superforms/adapters";
-  import { Bookmark, ChevronDown, Settings2, Trash2 } from "@lucide/svelte";
+  import { BookmarkIcon, ChevronDownIcon, Settings2Icon, Trash2Icon } from "@lucide/svelte";
   import { resolve } from "$app/paths";
   import * as AlertDialog from "$lib/components/ui/alert-dialog";
   import * as Avatar from "$lib/components/ui/avatar";
@@ -147,7 +147,7 @@
     <Empty.Root class="my-28 sm:my-56">
       <Empty.Header>
         <Empty.Media variant="icon">
-          <Bookmark />
+          <BookmarkIcon />
         </Empty.Media>
         <Empty.Title>{emptyTitle}</Empty.Title>
         <Empty.Description>{emptyDescription}</Empty.Description>
@@ -201,14 +201,14 @@
                       variant="outline"
                       size="icon-sm"
                       onclick={() => handleUpdateBookmarkDialogOpen(bookmark)}>
-                      <Settings2 />
+                      <Settings2Icon />
                       <span class="sr-only">Update</span>
                     </Button>
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger>
                         {#snippet child({ props })}
                           <Button {...props} variant="outline" size="icon-sm">
-                            <ChevronDown />
+                            <ChevronDownIcon />
                             <span class="sr-only">Manage Bookmark</span>
                           </Button>
                         {/snippet}
@@ -218,7 +218,7 @@
                           <DropdownMenu.Item
                             variant="destructive"
                             onclick={() => handleDeleteBookmarkDialogOpen(bookmark)}>
-                            <Trash2 />
+                            <Trash2Icon />
                             Delete
                           </DropdownMenu.Item>
                         </DropdownMenu.Group>
