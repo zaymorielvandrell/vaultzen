@@ -69,8 +69,8 @@
 <Dialog.Root bind:open={isCreateBookmarkDialogOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>New Bookmark</Dialog.Title>
-      <Dialog.Description>Save a link to access it later.</Dialog.Description>
+      <Dialog.Title>Add Bookmark</Dialog.Title>
+      <Dialog.Description>Save a new link to your bookmark collection.</Dialog.Description>
     </Dialog.Header>
     <form
       id="create-bookmark-form"
@@ -85,7 +85,7 @@
             <Input type="url" bind:value={$formData.url} {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>The link you want to save.</Form.Description>
+        <Form.Description>Paste the URL of the webpage you want to save.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field {form} name="collectionId">
@@ -106,7 +106,9 @@
             </Select.Root>
           {/snippet}
         </Form.Control>
-        <Form.Description>Pick a collection for this bookmark.</Form.Description>
+        <Form.Description>
+          Choose a collection to organize this bookmark, or leave unsorted.
+        </Form.Description>
         <Form.FieldErrors />
       </Form.Field>
     </form>
@@ -116,7 +118,7 @@
         {#if $submitting}
           <Spinner />
         {/if}
-        Save Bookmark
+        Add Bookmark
       </Button>
     </Dialog.Footer>
   </Dialog.Content>

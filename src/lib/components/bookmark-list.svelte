@@ -208,7 +208,7 @@
                       <DropdownMenu.Group>
                         <DropdownMenu.Item onclick={() => handleUpdateBookmarkDialogOpen(bookmark)}>
                           <Settings2 />
-                          Edit Bookmark
+                          Update Bookmark
                         </DropdownMenu.Item>
                         <DropdownMenu.Item
                           variant="destructive"
@@ -251,8 +251,8 @@
 <Dialog.Root bind:open={isUpdateBookmarkDialogOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Edit Bookmark</Dialog.Title>
-      <Dialog.Description>Update the details this bookmark.</Dialog.Description>
+      <Dialog.Title>Update Bookmark</Dialog.Title>
+      <Dialog.Description>Modify the URL, title, description, or collection.</Dialog.Description>
     </Dialog.Header>
     <form
       id="update-bookmark-form"
@@ -281,7 +281,7 @@
             <Input type="url" bind:value={$updateFormData.url} {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>The link you want to save.</Form.Description>
+        <Form.Description>Paste the URL of the webpage you want to save.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field form={updateForm} name="title">
@@ -291,7 +291,7 @@
             <Input type="text" bind:value={$updateFormData.title} {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>Give this bookmark a name.</Form.Description>
+        <Form.Description>A title to help you identify this bookmark.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field form={updateForm} name="description">
@@ -301,7 +301,7 @@
             <Textarea bind:value={$updateFormData.description} {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>Extra details about this link (optional).</Form.Description>
+        <Form.Description>Add notes or context about this webpage.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field form={updateForm} name="collectionId">
@@ -322,7 +322,9 @@
             </Select.Root>
           {/snippet}
         </Form.Control>
-        <Form.Description>Pick a collection for this bookmark.</Form.Description>
+        <Form.Description>
+          Choose a collection to organize this bookmark, or leave unsorted.
+        </Form.Description>
         <Form.FieldErrors />
       </Form.Field>
     </form>
@@ -332,7 +334,7 @@
         {#if $updateSubmitting}
           <Spinner />
         {/if}
-        Save Changes
+        Update Bookmark
       </Button>
     </Dialog.Footer>
   </Dialog.Content>
@@ -341,9 +343,9 @@
 <AlertDialog.Root bind:open={isDeleteBookmarkDialogOpen}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Delete this bookmark?</AlertDialog.Title>
+      <AlertDialog.Title>Delete Bookmark</AlertDialog.Title>
       <AlertDialog.Description>
-        This can't be undone. The bookmark will be permanently removed.
+        This bookmark will be permanently deleted and cannot be recovered.
       </AlertDialog.Description>
     </AlertDialog.Header>
     <form id="delete-bookmark-form" action="/bookmark/delete" method="post" use:deleteEnhance>

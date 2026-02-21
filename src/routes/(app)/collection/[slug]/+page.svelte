@@ -85,7 +85,7 @@
     <ButtonGroup.Root>
       <Button variant="outline" size="icon" onclick={() => (isUpdateCollectionDialogOpen = true)}>
         <Settings2 />
-        <span class="sr-only">Edit Collection</span>
+        <span class="sr-only">Update Collection</span>
       </Button>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
@@ -122,8 +122,8 @@
 <Dialog.Root bind:open={isUpdateCollectionDialogOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Edit Collection</Dialog.Title>
-      <Dialog.Description>Rename this collection or add a description.</Dialog.Description>
+      <Dialog.Title>Update Collection</Dialog.Title>
+      <Dialog.Description>Modify the name and description of your collection.</Dialog.Description>
     </Dialog.Header>
     <form
       id="update-collection-form"
@@ -145,7 +145,7 @@
             <Input type="text" bind:value={$updateFormData.name} {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>A memorable name for this collection.</Form.Description>
+        <Form.Description>Give your collection a clear and descriptive name.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field form={updateForm} name="description">
@@ -155,7 +155,7 @@
             <Textarea bind:value={$updateFormData.description} {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>What this collection is for (optional).</Form.Description>
+        <Form.Description>Add context to remember what this collection contains.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
     </form>
@@ -165,7 +165,7 @@
         {#if $updateSubmitting}
           <Spinner />
         {/if}
-        Save Changes
+        Update Collection
       </Button>
     </Dialog.Footer>
   </Dialog.Content>
@@ -174,10 +174,9 @@
 <AlertDialog.Root bind:open={isDeleteCollectionDialogOpen}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Delete this collection?</AlertDialog.Title>
+      <AlertDialog.Title>Delete Collection</AlertDialog.Title>
       <AlertDialog.Description>
-        This will remove the collection and its bookmarks. You can always add them to another
-        collection later.
+        The collection will be permanently deleted. Bookmarks inside will be moved to Unsorted.
       </AlertDialog.Description>
     </AlertDialog.Header>
     <form id="delete-collection-form" action="?/delete" method="post" use:deleteEnhance>

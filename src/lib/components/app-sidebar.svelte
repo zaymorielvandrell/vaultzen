@@ -245,9 +245,9 @@
 <Dialog.Root bind:open={isCreateCollectionDialogOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>New Collection</Dialog.Title>
+      <Dialog.Title>Create Collection</Dialog.Title>
       <Dialog.Description>
-        Group your bookmarks into collections to stay organized.
+        Organize your bookmarks by topic, project, or any category you like.
       </Dialog.Description>
     </Dialog.Header>
     <form
@@ -263,7 +263,7 @@
             <Input type="text" bind:value={$createFormData.name} {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>A memorable name for this collection.</Form.Description>
+        <Form.Description>Give your collection a clear and descriptive name.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field form={createForm} name="description">
@@ -273,7 +273,7 @@
             <Textarea bind:value={$createFormData.description} {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>What this collection is for (optional).</Form.Description>
+        <Form.Description>Add context to remember what this collection contains.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
     </form>
@@ -292,8 +292,8 @@
 <Dialog.Root bind:open={isUpdateProfileDialogOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Edit Profile</Dialog.Title>
-      <Dialog.Description>Manage your account settings.</Dialog.Description>
+      <Dialog.Title>Update Profile</Dialog.Title>
+      <Dialog.Description>Change how your name appears in VaultZen.</Dialog.Description>
     </Dialog.Header>
     <form id="update-profile-form" action="/profile" method="post" use:updateEnhance>
       <Form.Field form={updateForm} name="name">
@@ -303,7 +303,7 @@
             <Input type="text" bind:value={$updateFormData.name} {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>Your display name.</Form.Description>
+        <Form.Description>This name will be displayed throughout the app.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
     </form>
@@ -313,7 +313,7 @@
         {#if $updateSubmitting}
           <Spinner />
         {/if}
-        Save Changes
+        Update Profile
       </Button>
     </Dialog.Footer>
   </Dialog.Content>
