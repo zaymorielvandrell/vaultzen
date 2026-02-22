@@ -122,7 +122,7 @@
   });
 </script>
 
-<Sidebar.Root>
+<Sidebar.Root variant="inset">
   <Sidebar.Header />
   <Sidebar.Content>
     <Sidebar.Group>
