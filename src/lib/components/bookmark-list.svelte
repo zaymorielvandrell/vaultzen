@@ -200,7 +200,11 @@
                     <Button
                       variant="outline"
                       size="icon-sm"
-                      onclick={() => handleUpdateBookmarkDialogOpen(bookmark)}>
+                      onclick={(event) => {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        handleUpdateBookmarkDialogOpen(bookmark);
+                      }}>
                       <Settings2Icon />
                       <span class="sr-only">Update Bookmark</span>
                     </Button>
