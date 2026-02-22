@@ -11,6 +11,7 @@
     FolderIcon,
     GalleryVerticalEndIcon,
     InboxIcon,
+    LinkIcon,
     LogOutIcon,
     MoonIcon,
     PlusIcon,
@@ -232,6 +233,13 @@
                 <MoonIcon
                   class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0" />
                 Toggle Theme
+              </DropdownMenu.Item>
+            </DropdownMenu.Group>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Group>
+              <DropdownMenu.Item onclick={async () => await goto(resolve("/"))}>
+                <LinkIcon />
+                Homepage
               </DropdownMenu.Item>
             </DropdownMenu.Group>
             <DropdownMenu.Separator />
