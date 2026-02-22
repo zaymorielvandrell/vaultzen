@@ -1,6 +1,7 @@
 <script lang="ts">
   import { APIError } from "better-auth";
   import type { InferSelectModel } from "drizzle-orm";
+  import { toggleMode } from "mode-watcher";
   import { charAt, toUpperCase } from "string-ts";
   import { toast } from "svelte-sonner";
   import { superForm, type Infer, type SuperValidated } from "sveltekit-superforms";
@@ -11,7 +12,9 @@
     GalleryVerticalEndIcon,
     InboxIcon,
     LogOutIcon,
+    MoonIcon,
     PlusIcon,
+    SunIcon,
     UserCogIcon
   } from "@lucide/svelte";
   import { goto } from "$app/navigation";
@@ -201,28 +204,38 @@
             side="top"
             sideOffset={8}
             class="w-(--bits-dropdown-menu-anchor-width)">
-            <DropdownMenu.Group>
-              <DropdownMenu.Label>
-                <div class="flex items-center gap-2">
-                  <Avatar.Root class="rounded-lg">
-                    <Avatar.Image src={data.user.image} alt={data.user.name} />
-                    <Avatar.Fallback class="rounded-lg">
-                      {toUpperCase(charAt(data.user.name, 0))}
-                    </Avatar.Fallback>
-                  </Avatar.Root>
-                  <div>
-                    <p class="truncate">{data.user.name}</p>
-                    <p class="truncate text-xs font-medium text-muted-foreground">
-                      {data.user.email}
-                    </p>
-                  </div>
+            <DropdownMenu.Label>
+              <div class="flex items-center gap-2">
+                <Avatar.Root class="rounded-lg">
+                  <Avatar.Image src={data.user.image} alt={data.user.name} />
+                  <Avatar.Fallback class="rounded-lg">
+                    {toUpperCase(charAt(data.user.name, 0))}
+                  </Avatar.Fallback>
+                </Avatar.Root>
+                <div>
+                  <p class="truncate">{data.user.name}</p>
+                  <p class="truncate text-xs font-medium text-muted-foreground">
+                    {data.user.email}
+                  </p>
                 </div>
-              </DropdownMenu.Label>
-              <DropdownMenu.Separator />
+              </div>
+            </DropdownMenu.Label>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Group>
               <DropdownMenu.Item onclick={handleUpdateProfileDialogOpen}>
                 <UserCogIcon />
-                Profile
+                My Profile
               </DropdownMenu.Item>
+              <DropdownMenu.Item onclick={toggleMode}>
+                <SunIcon
+                  class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90" />
+                <MoonIcon
+                  class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0" />
+                Toggle Theme
+              </DropdownMenu.Item>
+            </DropdownMenu.Group>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Group>
               <DropdownMenu.Item variant="destructive" onclick={handleSignOut}>
                 {#if isSignOut}
                   <Spinner />
