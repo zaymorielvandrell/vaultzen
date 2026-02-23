@@ -1,8 +1,11 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button";
+  import Extensions from "$lib/components/marketing/extensions.svelte";
+  import Features from "$lib/components/marketing/features.svelte";
+  import Hero from "$lib/components/marketing/hero.svelte";
+  import Testimonials from "$lib/components/marketing/testimonials.svelte";
 </script>
 
-<div>
-  <h1>Welcome to VaultZen</h1>
-  <Button href="/sign-in">Sign In</Button>
-</div>
+<Hero />
+<Features />
+<Testimonials />
+<Extensions />

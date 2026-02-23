@@ -7,7 +7,7 @@
   let { children }: LayoutProps = $props();
 </script>
 
-<ModeWatcher />
+<ModeWatcher defaultMode="dark" />
 <Toaster />
 
 {@render children()}

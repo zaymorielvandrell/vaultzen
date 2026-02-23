@@ -127,7 +127,17 @@
 </script>
 
 <Sidebar.Root variant="inset">
-  <Sidebar.Header />
+  <Sidebar.Header>
+    <Sidebar.Menu>
+      <Sidebar.MenuItem>
+        <Sidebar.MenuButton size="lg" class="text-xl font-semibold tracking-tight">
+          {#snippet child({ props })}
+            <a href={resolve("/dashboard")} {...props}>VaultZen</a>
+          {/snippet}
+        </Sidebar.MenuButton>
+      </Sidebar.MenuItem>
+    </Sidebar.Menu>
+  </Sidebar.Header>
   <Sidebar.Content>
     <Sidebar.Group>
       <Sidebar.GroupContent>

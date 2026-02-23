@@ -34,7 +34,7 @@
   --sidebar-accent-foreground: oklch(0.325 0 0);
   --sidebar-border: oklch(0.9401 0 0);
   --sidebar-ring: oklch(0.7731 0 0);
-  --font-sans: Outfit, sans-serif;
+  --font-sans: Bricolage Grotesque, sans-serif;
   --font-mono: JetBrains Mono, monospace;
   --radius: 1rem;
   --shadow-x: 0;
@@ -88,7 +88,7 @@
   --sidebar-accent-foreground: oklch(0.8074 0.0142 93.0137);
   --sidebar-border: oklch(0.9401 0 0);
   --sidebar-ring: oklch(0.7731 0 0);
-  --font-sans: Outfit, sans-serif;
+  --font-sans: Bricolage Grotesque, sans-serif;
   --font-mono: JetBrains Mono, monospace;
   --radius: 1rem;
   --shadow-x: 0;
@@ -186,6 +186,28 @@
 }
 
 @layer components {
+  .marketing-typography {
+    & h1:not(.not-typography *) {
+      @apply mt-4 text-4xl font-semibold tracking-tight first:mt-0 sm:text-5xl md:text-6xl;
+    }
+
+    & h2:not(.not-typography *) {
+      @apply mt-4 text-2xl font-semibold tracking-tight first:mt-0 sm:text-3xl md:text-4xl;
+    }
+
+    & h3:not(.not-typography *) {
+      @apply mt-4 text-lg font-semibold tracking-tight first:mt-0 sm:text-xl;
+    }
+
+    & h4:not(.not-typography *) {
+      @apply mt-4 text-base font-semibold tracking-tight first:mt-0 sm:text-lg;
+    }
+
+    & p:not(.not-typography *) {
+      @apply mt-2 leading-7 first:mt-0;
+    }
+  }
+
   .dashboard-typography {
     & h1:not(.not-typography *) {
       @apply mt-4 text-2xl font-semibold tracking-tight first:mt-0;
