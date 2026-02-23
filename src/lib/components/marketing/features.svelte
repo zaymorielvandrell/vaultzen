@@ -28,7 +28,7 @@
         <p class="text-muted-foreground">Effortless organization, unmatched simplicity.</p>
       </div>
       <div class="h-64 w-full overflow-hidden rounded-md">
-        <img
+        <enhanced:img
           class="origin-top-left scale-200"
           src={DashboardScreenshot}
           alt="Dashboard Screenshot" />
@@ -41,7 +41,7 @@
         <p class="text-muted-foreground">View your bookmarks your way.</p>
       </div>
       <div class="h-64 w-full overflow-hidden rounded-md">
-        <img
+        <enhanced:img
           class="origin-top-right scale-200"
           src={DashboardScreenshot}
           alt="Dashboard Screenshot" />
@@ -77,7 +77,7 @@
         </Button>
       </div>
       <div class="h-72 w-1/2 translate-y-16 overflow-hidden rounded-md">
-        <img src={MobileDashboardScreenshot} alt="Mobile Dashboard Screenshot" />
+        <enhanced:img src={MobileDashboardScreenshot} alt="Mobile Dashboard Screenshot" />
       </div>
     </div>
   </div>
