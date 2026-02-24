@@ -4,7 +4,7 @@
   import { superForm } from "sveltekit-superforms";
   import type { Infer, SuperValidated } from "sveltekit-superforms";
   import { zod4Client } from "sveltekit-superforms/adapters";
-  import { BookmarkIcon, ChevronDownIcon, Settings2Icon, Trash2Icon } from "@lucide/svelte";
+  import { ChevronDownIcon, CircleSlashIcon, Settings2Icon, Trash2Icon } from "@lucide/svelte";
   import { resolve } from "$app/paths";
   import * as AlertDialog from "$lib/components/ui/alert-dialog";
   import * as Avatar from "$lib/components/ui/avatar";
@@ -144,10 +144,10 @@
     </div>
   {/if}
   {#if !hasBookmarks}
-    <Empty.Root class="my-28 sm:my-56">
+    <Empty.Root class="my-24 sm:my-48">
       <Empty.Header>
         <Empty.Media variant="icon">
-          <BookmarkIcon />
+          <CircleSlashIcon />
         </Empty.Media>
         <Empty.Title>{emptyTitle}</Empty.Title>
         <Empty.Description>{emptyDescription}</Empty.Description>

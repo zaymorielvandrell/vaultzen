@@ -42,9 +42,9 @@
           <p>{testimonial.quote}</p>
         </div>
         <div class="flex items-center gap-2">
-          <Avatar.Root class="size-6">
+          <Avatar.Root class="size-6 rounded-lg">
             <Avatar.Image src={testimonial.image} alt={testimonial.name} />
-            <Avatar.Fallback>
+            <Avatar.Fallback class="rounded-lg">
               {toUpperCase(charAt(testimonial.name, 0))}
             </Avatar.Fallback>
           </Avatar.Root>

@@ -9,7 +9,7 @@
       <div class="inline-flex w-1/2 items-center justify-start">
         <a href={resolve("/")} class="text-xl font-semibold tracking-tight">VaultZen</a>
       </div>
-      <div class="inline-flex w-1/2 items-center justify-end gap-4">
+      <div class="inline-flex w-1/2 items-center justify-end gap-2">
         <Button
           href="https://github.com/zaymorielvandrell/vaultzen"
           target="_blank"

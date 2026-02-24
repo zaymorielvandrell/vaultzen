@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { BlocksIcon, ChromiumIcon, GlobeIcon, ShieldIcon } from "@lucide/svelte";
+  import { BellRingIcon, ChromiumIcon, GlobeIcon, ShieldIcon } from "@lucide/svelte";
   import { Button } from "$lib/components/ui/button";
 </script>
 
@@ -35,7 +35,7 @@
       </p>
     </div>
     <Button href="/sign-in" size="lg">
-      <BlocksIcon />
+      <BellRingIcon />
       Coming Soon
     </Button>
   </div>
