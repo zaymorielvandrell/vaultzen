@@ -1,5 +1,6 @@
 import { and, desc, eq } from "drizzle-orm";
 import { kebabCase } from "string-ts";
+import { definePageMetaTags } from "svelte-meta-tags";
 import { fail, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
 import { error, redirect } from "@sveltejs/kit";
@@ -25,7 +26,12 @@ export const load: PageServerLoad = async (event) => {
     return error(404, "Collection not found");
   }
 
+  const pageTags = definePageMetaTags({
+    title: existingCollection.name
+  });
+
   return {
+    ...pageTags,
     collection: existingCollection,
     updateBookmarkForm: await superValidate(zod4(updateBookmarkSchema)),
     deleteBookmarkForm: await superValidate(zod4(deleteBookmarkSchema)),
