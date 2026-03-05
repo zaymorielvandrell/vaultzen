@@ -76,7 +76,7 @@
           <ChevronRightIcon />
         </Button>
       </div>
-      <div class="h-72 w-1/2 translate-y-16 overflow-hidden rounded-md">
+      <div class="h-72 w-1/2 translate-y-16 rotate-3 overflow-hidden rounded-md">
         <enhanced:img src={MobileDashboardScreenshot} alt="Mobile Dashboard Screenshot" />
       </div>
     </div>
