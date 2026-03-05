@@ -25,11 +25,13 @@
     onResult: ({ result }) => {
       if (result.type === "redirect") {
         isCreateBookmarkDialogOpen = false;
+        selectedCollectionId = "";
+        reset({ data: { url: "", collectionId: null } });
       }
     }
   });
 
-  const { form: formData, submitting, enhance } = form;
+  const { form: formData, submitting, reset, enhance } = form;
 
   const collectionsById = $derived(
     Object.fromEntries(data.collections.map((collection) => [collection.id, collection]))

@@ -64,11 +64,22 @@
     onResult: ({ result }) => {
       if (result.type === "redirect") {
         isCreateCollectionDialogOpen = false;
+        createReset({
+          data: {
+            name: "",
+            description: ""
+          }
+        });
       }
     }
   });
 
-  const { form: createFormData, submitting: createSubmitting, enhance: createEnhance } = createForm;
+  const {
+    form: createFormData,
+    submitting: createSubmitting,
+    reset: createReset,
+    enhance: createEnhance
+  } = createForm;
 
   // svelte-ignore state_referenced_locally
   const updateForm = superForm(data.updateProfileForm, {
