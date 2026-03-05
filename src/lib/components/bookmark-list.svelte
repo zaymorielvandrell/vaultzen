@@ -288,7 +288,7 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>URL</Form.Label>
-            <Input type="url" bind:value={$updateFormData.url} {...props} />
+            <Input type="url" bind:value={$updateFormData.url} placeholder="Enter URL" {...props} />
           {/snippet}
         </Form.Control>
         <Form.Description>Paste the URL of the webpage you want to save.</Form.Description>
@@ -298,7 +298,11 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>Title</Form.Label>
-            <Input type="text" bind:value={$updateFormData.title} {...props} />
+            <Input
+              type="text"
+              bind:value={$updateFormData.title}
+              placeholder="Enter title"
+              {...props} />
           {/snippet}
         </Form.Control>
         <Form.Description>A title to help you identify this bookmark.</Form.Description>
@@ -308,7 +312,10 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>Description</Form.Label>
-            <Textarea bind:value={$updateFormData.description} {...props} />
+            <Textarea
+              bind:value={$updateFormData.description}
+              placeholder="Enter description"
+              {...props} />
           {/snippet}
         </Form.Control>
         <Form.Description>Add notes or context about this webpage.</Form.Description>

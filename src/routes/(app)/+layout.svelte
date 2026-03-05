@@ -84,7 +84,7 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>URL</Form.Label>
-            <Input type="url" bind:value={$formData.url} {...props} />
+            <Input type="url" bind:value={$formData.url} placeholder="Enter URL" {...props} />
           {/snippet}
         </Form.Control>
         <Form.Description>Paste the URL of the webpage you want to save.</Form.Description>

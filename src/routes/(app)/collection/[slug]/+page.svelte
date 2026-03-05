@@ -142,7 +142,11 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>Name</Form.Label>
-            <Input type="text" bind:value={$updateFormData.name} {...props} />
+            <Input
+              type="text"
+              bind:value={$updateFormData.name}
+              placeholder="Enter name"
+              {...props} />
           {/snippet}
         </Form.Control>
         <Form.Description>Give your collection a clear and descriptive name.</Form.Description>
@@ -152,7 +156,10 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>Description</Form.Label>
-            <Textarea bind:value={$updateFormData.description} {...props} />
+            <Textarea
+              bind:value={$updateFormData.description}
+              placeholder="Enter description"
+              {...props} />
           {/snippet}
         </Form.Control>
         <Form.Description>Add context to remember what this collection contains.</Form.Description>
