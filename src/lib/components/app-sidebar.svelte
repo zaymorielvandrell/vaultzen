@@ -47,7 +47,6 @@
 
   let { data }: Props = $props();
 
-  let isCollections = $state(true);
   let isCreateCollectionDialogOpen = $state(false);
   let isUpdateProfileDialogOpen = $state(false);
   let isSignOut = $state(false);
@@ -129,12 +128,6 @@
       isSignOut = false;
     }
   };
-
-  $effect(() => {
-    if (data.collections) {
-      isCollections = false;
-    }
-  });
 </script>
 
 <Sidebar.Root variant="inset">
@@ -176,26 +169,18 @@
       </Sidebar.GroupAction>
       <Sidebar.GroupContent>
         <Sidebar.Menu>
-          {#if isCollections}
-            {#each Array(6)}
-              <Sidebar.MenuItem>
-                <Sidebar.MenuSkeleton showIcon />
-              </Sidebar.MenuItem>
-            {/each}
-          {:else}
-            {#each data.collections as collection (collection.id)}
-              <Sidebar.MenuItem>
-                <Sidebar.MenuButton>
-                  {#snippet child({ props })}
-                    <a href={resolve(`/collection/${collection.slug}`)} {...props}>
-                      <FolderIcon />
-                      <span>{collection.name}</span>
-                    </a>
-                  {/snippet}
-                </Sidebar.MenuButton>
-              </Sidebar.MenuItem>
-            {/each}
-          {/if}
+          {#each data.collections as collection (collection.id)}
+            <Sidebar.MenuItem>
+              <Sidebar.MenuButton>
+                {#snippet child({ props })}
+                  <a href={resolve(`/collection/${collection.slug}`)} {...props}>
+                    <FolderIcon />
+                    <span>{collection.name}</span>
+                  </a>
+                {/snippet}
+              </Sidebar.MenuButton>
+            </Sidebar.MenuItem>
+          {/each}
         </Sidebar.Menu>
       </Sidebar.GroupContent>
     </Sidebar.Group>

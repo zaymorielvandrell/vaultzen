@@ -65,10 +65,15 @@
     enhance: deleteEnhance
   } = deleteForm;
 
-  $effect(() => {
+  const handleUpdateCollectionDialogOpen = () => {
     updateReset({ data: data.updateCollectionForm.data });
+    isUpdateCollectionDialogOpen = true;
+  };
+
+  const handleDeleteCollectionDialogOpen = () => {
     deleteReset({ data: data.deleteCollectionForm.data });
-  });
+    isDeleteCollectionDialogOpen = true;
+  };
 </script>
 
 <div class="flex flex-col gap-8">
@@ -83,7 +88,7 @@
       </p>
     </div>
     <ButtonGroup.Root>
-      <Button variant="outline" size="icon" onclick={() => (isUpdateCollectionDialogOpen = true)}>
+      <Button variant="outline" size="icon" onclick={handleUpdateCollectionDialogOpen}>
         <Settings2Icon />
         <span class="sr-only">Update Collection</span>
       </Button>
@@ -98,9 +103,7 @@
         </DropdownMenu.Trigger>
         <DropdownMenu.Content align="end">
           <DropdownMenu.Group>
-            <DropdownMenu.Item
-              variant="destructive"
-              onclick={() => (isDeleteCollectionDialogOpen = true)}>
+            <DropdownMenu.Item variant="destructive" onclick={handleDeleteCollectionDialogOpen}>
               <Trash2Icon />
               Delete
             </DropdownMenu.Item>
@@ -134,7 +137,7 @@
       <Form.Field form={updateForm} name="id">
         <Form.Control>
           {#snippet children({ props })}
-            <Input type="hidden" bind:value={$deleteFormData.id} {...props} />
+            <Input type="hidden" bind:value={$updateFormData.id} {...props} />
           {/snippet}
         </Form.Control>
       </Form.Field>

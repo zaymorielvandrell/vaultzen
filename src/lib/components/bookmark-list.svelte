@@ -18,7 +18,6 @@
   import * as Form from "$lib/components/ui/form";
   import { Input } from "$lib/components/ui/input";
   import * as Select from "$lib/components/ui/select";
-  import { Skeleton } from "$lib/components/ui/skeleton";
   import { Spinner } from "$lib/components/ui/spinner";
   import { Textarea } from "$lib/components/ui/textarea";
   import { deleteBookmarkSchema, updateBookmarkSchema } from "$lib/schemas/bookmark";
@@ -46,7 +45,6 @@
     emptyDescription
   }: Props = $props();
 
-  let isBookmarks = $state(true);
   let isUpdateBookmarkDialogOpen = $state(false);
   let isDeleteBookmarkDialogOpen = $state(false);
   let selectedCollectionId = $state("");
@@ -99,8 +97,13 @@
     enhance: deleteEnhance
   } = deleteForm;
 
+  const setSelectedCollectionId = (value: string) => {
+    selectedCollectionId = value;
+    $updateFormData.collectionId = value === "" ? null : value;
+  };
+
   const handleUpdateBookmarkDialogOpen = (data: Bookmark) => {
-    selectedCollectionId = data.collectionId ?? "";
+    setSelectedCollectionId(data.collectionId ?? "");
 
     updateReset({
       data: {
@@ -124,14 +127,6 @@
 
     isDeleteBookmarkDialogOpen = true;
   };
-
-  $effect(() => {
-    if (bookmarks) {
-      isBookmarks = false;
-    }
-
-    $updateFormData.collectionId = selectedCollectionId === "" ? null : selectedCollectionId;
-  });
 </script>
 
 <div class="flex flex-col gap-8">
@@ -155,105 +150,79 @@
     </Empty.Root>
   {:else}
     <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {#if isBookmarks}
-        {#each Array(8)}
-          <Card.Root class="border-transparent">
+      {#each bookmarks as bookmark (bookmark.id)}
+        <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+        <a href={bookmark.url} target="_blank" rel="noopener noreferrer">
+          <Card.Root class="not-typography h-full">
             <Card.Header>
               <Card.Title class="flex items-center gap-2">
-                <Skeleton class="size-4" />
-                <Skeleton class="h-4 w-4/5" />
+                <Avatar.Root class="size-4 rounded-lg">
+                  <Avatar.Image src={bookmark.favicon} alt={bookmark.title} />
+                  <Avatar.Fallback class="rounded-lg">
+                    {toUpperCase(charAt(bookmark.title, 0))}
+                  </Avatar.Fallback>
+                </Avatar.Root>
+                <p class="line-clamp-1">{bookmark.title}</p>
               </Card.Title>
-              <Card.Description>
-                <Skeleton class="h-4 w-2/5" />
-              </Card.Description>
+              <Card.Description>{bookmark.host}</Card.Description>
               <Card.Action>
-                <Skeleton class="h-8 w-16" />
+                <ButtonGroup.Root>
+                  <Button
+                    variant="outline"
+                    size="icon-sm"
+                    onclick={(event) => {
+                      event.stopPropagation();
+                      event.preventDefault();
+                      handleUpdateBookmarkDialogOpen(bookmark);
+                    }}>
+                    <Settings2Icon />
+                    <span class="sr-only">Update Bookmark</span>
+                  </Button>
+                  <DropdownMenu.Root>
+                    <DropdownMenu.Trigger>
+                      {#snippet child({ props })}
+                        <Button {...props} variant="outline" size="icon-sm">
+                          <ChevronDownIcon />
+                          <span class="sr-only">Manage Bookmark</span>
+                        </Button>
+                      {/snippet}
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content align="end">
+                      <DropdownMenu.Group>
+                        <DropdownMenu.Item
+                          variant="destructive"
+                          onclick={() => handleDeleteBookmarkDialogOpen(bookmark)}>
+                          <Trash2Icon />
+                          Delete
+                        </DropdownMenu.Item>
+                      </DropdownMenu.Group>
+                    </DropdownMenu.Content>
+                  </DropdownMenu.Root>
+                </ButtonGroup.Root>
               </Card.Action>
             </Card.Header>
             <Card.Content>
-              <Skeleton class="h-12 w-full" />
+              <p class="line-clamp-2">{bookmark.description}</p>
             </Card.Content>
             <Card.Footer class="mt-auto flex items-center justify-between gap-2">
-              <Skeleton class="h-4 w-16" />
-              <Skeleton class="h-4 w-20" />
+              {#if bookmark.collectionId}
+                <a
+                  href={resolve(`/collection/${collectionsById[bookmark.collectionId].slug}`)}
+                  class={badgeVariants({ variant: "secondary" })}>
+                  {collectionsById[bookmark.collectionId].name}
+                </a>
+              {:else}
+                <a href={resolve("/unsorted")} class={badgeVariants({ variant: "secondary" })}>
+                  Unsorted
+                </a>
+              {/if}
+              <p class="line-clamp-1 text-xs text-muted-foreground">
+                {format(bookmark.updatedAt, "PP")}
+              </p>
             </Card.Footer>
           </Card.Root>
-        {/each}
-      {:else}
-        {#each bookmarks as bookmark (bookmark.id)}
-          <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-          <a href={bookmark.url} target="_blank" rel="noopener noreferrer">
-            <Card.Root class="not-typography h-full">
-              <Card.Header>
-                <Card.Title class="flex items-center gap-2">
-                  <Avatar.Root class="size-4 rounded-lg">
-                    <Avatar.Image src={bookmark.favicon} alt={bookmark.title} />
-                    <Avatar.Fallback class="rounded-lg">
-                      {toUpperCase(charAt(bookmark.title, 0))}
-                    </Avatar.Fallback>
-                  </Avatar.Root>
-                  <p class="line-clamp-1">{bookmark.title}</p>
-                </Card.Title>
-                <Card.Description>{bookmark.host}</Card.Description>
-                <Card.Action>
-                  <ButtonGroup.Root>
-                    <Button
-                      variant="outline"
-                      size="icon-sm"
-                      onclick={(event) => {
-                        event.stopPropagation();
-                        event.preventDefault();
-                        handleUpdateBookmarkDialogOpen(bookmark);
-                      }}>
-                      <Settings2Icon />
-                      <span class="sr-only">Update Bookmark</span>
-                    </Button>
-                    <DropdownMenu.Root>
-                      <DropdownMenu.Trigger>
-                        {#snippet child({ props })}
-                          <Button {...props} variant="outline" size="icon-sm">
-                            <ChevronDownIcon />
-                            <span class="sr-only">Manage Bookmark</span>
-                          </Button>
-                        {/snippet}
-                      </DropdownMenu.Trigger>
-                      <DropdownMenu.Content align="end">
-                        <DropdownMenu.Group>
-                          <DropdownMenu.Item
-                            variant="destructive"
-                            onclick={() => handleDeleteBookmarkDialogOpen(bookmark)}>
-                            <Trash2Icon />
-                            Delete
-                          </DropdownMenu.Item>
-                        </DropdownMenu.Group>
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Root>
-                  </ButtonGroup.Root>
-                </Card.Action>
-              </Card.Header>
-              <Card.Content>
-                <p class="line-clamp-2">{bookmark.description}</p>
-              </Card.Content>
-              <Card.Footer class="mt-auto flex items-center justify-between gap-2">
-                {#if bookmark.collectionId}
-                  <a
-                    href={resolve(`/collection/${collectionsById[bookmark.collectionId].slug}`)}
-                    class={badgeVariants({ variant: "secondary" })}>
-                    {collectionsById[bookmark.collectionId].name}
-                  </a>
-                {:else}
-                  <a href={resolve("/unsorted")} class={badgeVariants({ variant: "secondary" })}>
-                    Unsorted
-                  </a>
-                {/if}
-                <p class="line-clamp-1 text-xs text-muted-foreground">
-                  {format(bookmark.updatedAt, "PP")}
-                </p>
-              </Card.Footer>
-            </Card.Root>
-          </a>
-        {/each}
-      {/if}
+        </a>
+      {/each}
     </div>
   {/if}
 </div>
@@ -325,7 +294,10 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>Collection</Form.Label>
-            <Select.Root type="single" bind:value={selectedCollectionId} name={props.name}>
+            <Select.Root
+              type="single"
+              bind:value={() => selectedCollectionId, setSelectedCollectionId}
+              name={props.name}>
               <Select.Trigger class="w-full" {...props}>
                 {collectionLabel}
               </Select.Trigger>

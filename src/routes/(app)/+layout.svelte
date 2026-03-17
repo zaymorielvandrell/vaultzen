@@ -16,7 +16,6 @@
   let { data, children }: LayoutProps = $props();
 
   let isCreateBookmarkDialogOpen = $state(false);
-  let selectedCollectionId = $state("");
 
   // svelte-ignore state_referenced_locally
   const form = superForm(data.createBookmarkForm, {
@@ -25,13 +24,13 @@
     onResult: ({ result }) => {
       if (result.type === "redirect") {
         isCreateBookmarkDialogOpen = false;
-        selectedCollectionId = "";
         reset({ data: { url: "", collectionId: null } });
       }
     }
   });
 
   const { form: formData, submitting, reset, enhance } = form;
+  const selectedCollectionId = $derived($formData.collectionId ?? "");
 
   const collectionsById = $derived(
     Object.fromEntries(data.collections.map((collection) => [collection.id, collection]))
@@ -43,9 +42,9 @@
       : "Unsorted"
   );
 
-  $effect(() => {
-    $formData.collectionId = selectedCollectionId === "" ? null : selectedCollectionId;
-  });
+  const setSelectedCollectionId = (value: string) => {
+    $formData.collectionId = value === "" ? null : value;
+  };
 </script>
 
 <Sidebar.Provider style="--sidebar-width: 20rem; --sidebar-width-mobile: 20rem;">
@@ -96,7 +95,10 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>Collection</Form.Label>
-            <Select.Root type="single" bind:value={selectedCollectionId} name={props.name}>
+            <Select.Root
+              type="single"
+              bind:value={() => selectedCollectionId, setSelectedCollectionId}
+              name={props.name}>
               <Select.Trigger class="w-full" {...props}>
                 {collectionLabel}
               </Select.Trigger>
