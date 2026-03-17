@@ -1,34 +1,36 @@
 import { defineBaseMetaTags } from "svelte-meta-tags";
-import type { LayoutLoad } from "./$types";
+import { env } from "$env/dynamic/private";
+import type { LayoutServerLoad } from "./$types";
 
-export const load: LayoutLoad = async (event) => {
+if (!env.ORIGIN) throw new Error("ORIGIN is not set");
+
+const openGraphImageUrl = new URL("/opengraph-image.png", env.ORIGIN).href;
+
+export const load: LayoutServerLoad = async (event) => {
+  const canonicalUrl = new URL(event.url.pathname, env.ORIGIN).href;
+
   const baseTags = defineBaseMetaTags({
     title: "Your bookmarks, perfectly organized.",
     titleTemplate: "%s • VaultZen",
     description:
       "VaultZen is a minimal bookmark manager to save links and organize bookmarks into simple collections. Try it for free.",
-    canonical: new URL(event.url.pathname, event.url.origin).href,
+    canonical: canonicalUrl,
     twitter: {
       cardType: "summary_large_image",
       title: "Your bookmarks, perfectly organized.",
       description:
         "VaultZen is a minimal bookmark manager to save links and organize bookmarks into simple collections. Try it for free.",
       creator: "@zaymoriel",
-      image: `${new URL(event.url.pathname, event.url.origin).href}opengraph-image.png`,
+      image: openGraphImageUrl,
       imageAlt: "VaultZen"
     },
     openGraph: {
-      url: new URL(event.url.pathname, event.url.origin).href,
+      url: canonicalUrl,
       type: "website",
       title: "Your bookmarks, perfectly organized.",
       description:
         "VaultZen is a minimal bookmark manager to save links and organize bookmarks into simple collections. Try it for free.",
-      images: [
-        {
-          url: `${new URL(event.url.pathname, event.url.origin).href}opengraph-image.png`,
-          alt: "VaultZen"
-        }
-      ]
+      images: [{ url: openGraphImageUrl, alt: "VaultZen" }]
     },
     additionalMetaTags: [
       { httpEquiv: "content-type", content: "text/html;charset=UTF-8" },
