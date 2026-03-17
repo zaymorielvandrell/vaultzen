@@ -4,10 +4,10 @@ import type { LayoutServerLoad } from "./$types";
 
 if (!env.ORIGIN) throw new Error("ORIGIN is not set");
 
-const openGraphImageUrl = new URL("/opengraph-image.png", env.ORIGIN).href;
-
 export const load: LayoutServerLoad = async (event) => {
-  const canonicalUrl = new URL(event.url.pathname, env.ORIGIN).href;
+  const siteOrigin = event.url.origin || env.ORIGIN;
+  const canonicalUrl = new URL(event.url.pathname, siteOrigin).href;
+  const openGraphImageUrl = new URL("/opengraph-image.png", siteOrigin).href;
 
   const baseTags = defineBaseMetaTags({
     title: "Your bookmarks, perfectly organized.",
