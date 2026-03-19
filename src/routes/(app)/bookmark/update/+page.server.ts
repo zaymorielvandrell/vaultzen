@@ -32,6 +32,9 @@ export const actions: Actions = {
     }
 
     const metadata = await extractMetadata(form.data.url);
+    const successMessage = metadata.usedFallback
+      ? "Bookmark updated successfully. Some page details could not be loaded."
+      : "Bookmark updated successfully.";
 
     await db
       .update(bookmark)
@@ -55,17 +58,12 @@ export const actions: Actions = {
         return redirect(
           302,
           `/collection/${existingCollection.slug}`,
-          { type: "success", message: "Bookmark updated successfully." },
+          { type: "success", message: successMessage },
           event
         );
       }
     }
 
-    return redirect(
-      302,
-      "/unsorted",
-      { type: "success", message: "Bookmark updated successfully." },
-      event
-    );
+    return redirect(302, "/unsorted", { type: "success", message: successMessage }, event);
   }
 };
