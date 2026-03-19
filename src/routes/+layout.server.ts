@@ -1,10 +1,11 @@
 import { defineBaseMetaTags } from "svelte-meta-tags";
+import { loadFlash } from "sveltekit-flash-message/server";
 import { env } from "$env/dynamic/private";
 import type { LayoutServerLoad } from "./$types";
 
 if (!env.ORIGIN) throw new Error("ORIGIN is not set");
 
-export const load: LayoutServerLoad = async (event) => {
+export const load: LayoutServerLoad = loadFlash(async (event) => {
   const siteOrigin = event.url.origin || env.ORIGIN;
   const canonicalUrl = new URL(event.url.pathname, siteOrigin).href;
   const openGraphImageUrl = new URL("/opengraph-image.png", siteOrigin).href;
@@ -52,4 +53,4 @@ export const load: LayoutServerLoad = async (event) => {
   });
 
   return { ...baseTags };
-};
+});

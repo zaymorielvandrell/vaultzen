@@ -1,9 +1,10 @@
 import { and, desc, eq } from "drizzle-orm";
 import { kebabCase } from "string-ts";
 import { definePageMetaTags } from "svelte-meta-tags";
+import { redirect, setFlash } from "sveltekit-flash-message/server";
 import { fail, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
-import { error, redirect } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import { deleteBookmarkSchema, updateBookmarkSchema } from "$lib/schemas/bookmark";
 import { deleteCollectionSchema, updateCollectionSchema } from "$lib/schemas/collection";
 import { db } from "$lib/server/db";
@@ -12,7 +13,7 @@ import type { Actions, PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async (event) => {
   if (!event.locals.user) {
-    return error(401, "Unauthorized");
+    return error(401, "You must be signed in to continue.");
   }
 
   const [existingCollection] = await db
@@ -23,7 +24,7 @@ export const load: PageServerLoad = async (event) => {
     );
 
   if (!existingCollection) {
-    return error(404, "Collection not found");
+    return error(404, "The collection could not be found.");
   }
 
   const pageTags = definePageMetaTags({
@@ -58,6 +59,7 @@ export const actions: Actions = {
     const form = await superValidate(event, zod4(updateCollectionSchema));
 
     if (!form.valid) {
+      setFlash({ type: "error", message: "Please check the collection details first." }, event);
       return fail(400, { form });
     }
 
@@ -72,17 +74,28 @@ export const actions: Actions = {
       })
       .where(eq(collection.id, form.data.id));
 
-    return redirect(302, `/collection/${slug}`);
+    return redirect(
+      302,
+      `/collection/${slug}`,
+      { type: "success", message: "Collection updated successfully." },
+      event
+    );
   },
   delete: async (event) => {
     const form = await superValidate(event, zod4(deleteCollectionSchema));
 
     if (!form.valid) {
+      setFlash({ type: "error", message: "Please check the collection details first." }, event);
       return fail(400, { form });
     }
 
     await db.delete(collection).where(eq(collection.id, form.data.id));
 
-    return redirect(302, "/dashboard");
+    return redirect(
+      302,
+      "/dashboard",
+      { type: "success", message: "Collection deleted successfully." },
+      event
+    );
   }
 };

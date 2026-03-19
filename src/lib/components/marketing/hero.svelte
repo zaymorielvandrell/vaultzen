@@ -22,10 +22,9 @@
       <MessageCircleIcon class="text-primary" />
       Your bookmarks, perfectly organized
     </Badge>
-    <h1 class="mt-6 mb-4">Bookmark manager, revolutionized.</h1>
+    <h1 class="mt-6 mb-4">A calmer way to save the web.</h1>
     <p class="mb-16">
-      Easy-to-use, VaultZen lets you save, customize, and manage all your bookmarks and important
-      links online like a breeze.
+      VaultZen helps you save, organize, and revisit your bookmarks without the clutter.
     </p>
     <Button href="/sign-in" size="lg" class="mb-2">
       Get Started for Free

@@ -18,14 +18,16 @@
       <br />
       bookmark manager
     </h2>
-    <p class="text-muted-foreground">Save and Organize Your Web Finds Seamlessly.</p>
+    <p class="text-muted-foreground">Save, sort, and revisit your best finds in one place.</p>
   </div>
   <div class="grid grid-cols-1 gap-2 sm:grid-cols-12">
     <div
       class="flex flex-col justify-between gap-6 rounded-lg border border-card bg-card p-6 text-card-foreground sm:col-span-7">
       <div>
-        <h3>Organize Like a Pro</h3>
-        <p class="text-muted-foreground">Effortless organization, unmatched simplicity.</p>
+        <h3>Organize with clarity</h3>
+        <p class="text-muted-foreground">
+          Keep related links together with a structure that stays easy to scan.
+        </p>
       </div>
       <div class="h-64 w-full overflow-hidden rounded-md">
         <enhanced:img
@@ -37,8 +39,10 @@
     <div
       class="flex flex-col justify-between gap-6 rounded-lg border border-card bg-card p-6 text-card-foreground sm:col-span-5">
       <div>
-        <h3>Customizable Views</h3>
-        <p class="text-muted-foreground">View your bookmarks your way.</p>
+        <h3>Flexible views</h3>
+        <p class="text-muted-foreground">
+          Browse your saved links in a layout that feels simple and familiar.
+        </p>
       </div>
       <div class="h-64 w-full overflow-hidden rounded-md">
         <enhanced:img
@@ -54,8 +58,10 @@
         <PaletteIcon />
       </div>
       <div>
-        <h3>Personalize to Your Liking</h3>
-        <p class="text-muted-foreground">Custom collections, a seamless browsing experience.</p>
+        <h3>Make it yours</h3>
+        <p class="text-muted-foreground">
+          Create collections that match your projects, interests, and workflow.
+        </p>
       </div>
     </div>
     <div
@@ -66,13 +72,13 @@
           <SmartphoneIcon />
         </div>
         <div class="mt-6 mb-4">
-          <h3>Mobile Experience</h3>
+          <h3>Works on mobile</h3>
           <p class="text-muted-foreground">
-            Access VaultZen seamlessly on the go. Enjoy a great experience on mobile devices.
+            Open VaultZen anywhere and manage your bookmarks comfortably on smaller screens.
           </p>
         </div>
         <Button href="/sign-in" variant="outline" size="sm">
-          Try VaultZen Now
+          Try VaultZen
           <ChevronRightIcon />
         </Button>
       </div>

@@ -1,7 +1,8 @@
 import { kebabCase } from "string-ts";
+import { redirect, setFlash } from "sveltekit-flash-message/server";
 import { fail, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
-import { error, redirect } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import { createCollectionSchema } from "$lib/schemas/collection";
 import { db } from "$lib/server/db";
 import { collection } from "$lib/server/db/schema";
@@ -12,11 +13,12 @@ export const actions: Actions = {
     const form = await superValidate(event, zod4(createCollectionSchema));
 
     if (!form.valid) {
+      setFlash({ type: "error", message: "Please check the collection details first." }, event);
       return fail(400, { form });
     }
 
     if (!event.locals.user) {
-      return error(401, "Unauthorized");
+      return error(401, "You must be signed in to continue.");
     }
 
     const slug = kebabCase(form.data.name);
@@ -31,6 +33,11 @@ export const actions: Actions = {
       })
       .onConflictDoNothing();
 
-    return redirect(302, `/collection/${slug}`);
+    return redirect(
+      302,
+      `/collection/${slug}`,
+      { type: "success", message: "Collection created successfully." },
+      event
+    );
   }
 };

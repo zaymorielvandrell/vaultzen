@@ -2,6 +2,7 @@
   import { superForm } from "sveltekit-superforms";
   import { zod4Client } from "sveltekit-superforms/adapters";
   import { ChevronDownIcon, Settings2Icon, Trash2Icon } from "@lucide/svelte";
+  import { syncFlashMessage } from "$lib/client/flash";
   import BookmarkList from "$lib/components/bookmark-list.svelte";
   import * as AlertDialog from "$lib/components/ui/alert-dialog";
   import { Button, buttonVariants } from "$lib/components/ui/button";
@@ -37,7 +38,8 @@
       if (result.type === "redirect") {
         isUpdateCollectionDialogOpen = false;
       }
-    }
+    },
+    onUpdated: syncFlashMessage
   });
 
   const {
@@ -55,7 +57,8 @@
       if (result.type === "redirect") {
         isDeleteCollectionDialogOpen = false;
       }
-    }
+    },
+    onUpdated: syncFlashMessage
   });
 
   const {
@@ -84,20 +87,21 @@
         {#if data.collection.description}
           {data.collection.description} •
         {/if}
-        You have {hasBookmarks ? bookmarks.length : 0} bookmark(s) saved.
+        You have {hasBookmarks ? bookmarks.length : 0}
+        {hasBookmarks && bookmarks.length === 1 ? " bookmark" : " bookmarks"} saved.
       </p>
     </div>
     <ButtonGroup.Root>
       <Button variant="outline" size="icon" onclick={handleUpdateCollectionDialogOpen}>
         <Settings2Icon />
-        <span class="sr-only">Update Collection</span>
+        <span class="sr-only">Edit collection</span>
       </Button>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
           {#snippet child({ props })}
             <Button {...props} variant="outline" size="icon">
               <ChevronDownIcon />
-              <span class="sr-only">Manage Collection</span>
+              <span class="sr-only">Manage collection</span>
             </Button>
           {/snippet}
         </DropdownMenu.Trigger>
@@ -118,15 +122,15 @@
     updateBookmarkForm={data.updateBookmarkForm}
     deleteBookmarkForm={data.deleteBookmarkForm}
     hideHeader
-    emptyTitle="No Bookmarks"
-    emptyDescription="This collection doesn't have any bookmarks yet." />
+    emptyTitle="No bookmarks yet"
+    emptyDescription="Save your first bookmark to this collection." />
 </div>
 
 <Dialog.Root bind:open={isUpdateCollectionDialogOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Update Collection</Dialog.Title>
-      <Dialog.Description>Modify the name and description of your collection.</Dialog.Description>
+      <Dialog.Title>Edit Collection</Dialog.Title>
+      <Dialog.Description>Update the name and description for this collection.</Dialog.Description>
     </Dialog.Header>
     <form
       id="update-collection-form"
@@ -148,11 +152,13 @@
             <Input
               type="text"
               bind:value={$updateFormData.name}
-              placeholder="Enter name"
+              placeholder="Enter a name"
               {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>Give your collection a clear and descriptive name.</Form.Description>
+        <Form.Description>
+          Choose a clear name so this collection is easy to recognize.
+        </Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field form={updateForm} name="description">
@@ -161,11 +167,11 @@
             <Form.Label>Description</Form.Label>
             <Textarea
               bind:value={$updateFormData.description}
-              placeholder="Enter description"
+              placeholder="Enter a description"
               {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>Add context to remember what this collection contains.</Form.Description>
+        <Form.Description>Add a short description to explain what belongs here.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
     </form>
@@ -175,7 +181,7 @@
         {#if $updateSubmitting}
           <Spinner />
         {/if}
-        Update Collection
+        Save Changes
       </Button>
     </Dialog.Footer>
   </Dialog.Content>
@@ -184,9 +190,10 @@
 <AlertDialog.Root bind:open={isDeleteCollectionDialogOpen}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Delete Collection</AlertDialog.Title>
+      <AlertDialog.Title>Delete collection</AlertDialog.Title>
       <AlertDialog.Description>
-        The collection will be permanently deleted. Bookmarks inside will be moved to Unsorted.
+        This collection will be permanently deleted. Any bookmarks inside it will be moved to
+        Unsorted.
       </AlertDialog.Description>
     </AlertDialog.Header>
     <form id="delete-collection-form" action="?/delete" method="post" use:deleteEnhance>

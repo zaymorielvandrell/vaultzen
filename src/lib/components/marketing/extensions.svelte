@@ -25,13 +25,13 @@
         </div>
       </div>
       <h2 class="mt-6 mb-4">
-        Bookmark Anywhere
+        Save from anywhere
         <br />
-        VaultZen on Every Browser
+        VaultZen for every browser
       </h2>
       <p class="text-muted-foreground">
-        Access VaultZen through Chrome, Edge, Firefox, and Safari extensions, enabling you to
-        effortlessly save and organize all your crucial web pages and information.
+        Browser extensions for Chrome, Edge, Firefox, and Safari are on the way, so saving links
+        will feel just as smooth as organizing them.
       </p>
     </div>
     <Button href="/sign-in" size="lg">

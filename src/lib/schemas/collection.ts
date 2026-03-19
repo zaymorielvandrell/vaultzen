@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createCollectionSchema = z.object({
-  name: z.string().trim().min(2, "Name must be at least 2 characters."),
+  name: z.string().trim().min(2, "Enter at least 2 characters for the name."),
   description: z.string().trim().optional()
 });
 

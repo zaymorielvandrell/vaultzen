@@ -28,7 +28,7 @@
           </svg>
           <span class="sr-only">GitHub</span>
         </Button>
-        <Button href="/sign-in">Sign In</Button>
+        <Button href="/sign-in">Sign in</Button>
       </div>
     </nav>
   </div>

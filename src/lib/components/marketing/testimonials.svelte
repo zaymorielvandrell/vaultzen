@@ -33,7 +33,7 @@
 <div class="container max-w-4xl py-32">
   <div class="mb-16 text-center">
     <h2 class="mb-2">Loved by users</h2>
-    <p class="text-muted-foreground">See what people are saying about VaultZen.</p>
+    <p class="text-muted-foreground">See how VaultZen fits into everyday workflows.</p>
   </div>
   <div class="grid grid-cols-1 gap-x-2 gap-y-6 sm:grid-cols-2">
     {#each testimonials as testimonial (testimonial.name)}

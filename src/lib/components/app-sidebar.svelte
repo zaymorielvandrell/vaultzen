@@ -21,6 +21,7 @@
   import { goto } from "$app/navigation";
   import { resolve } from "$app/paths";
   import { auth } from "$lib/auth/client";
+  import { syncFlashMessage } from "$lib/client/flash";
   import * as Avatar from "$lib/components/ui/avatar";
   import { Button, buttonVariants } from "$lib/components/ui/button";
   import * as Dialog from "$lib/components/ui/dialog";
@@ -70,7 +71,8 @@
           }
         });
       }
-    }
+    },
+    onUpdated: syncFlashMessage
   });
 
   const {
@@ -88,7 +90,8 @@
       if (result.type === "success") {
         isUpdateProfileDialogOpen = false;
       }
-    }
+    },
+    onUpdated: syncFlashMessage
   });
 
   const {
@@ -115,7 +118,7 @@
       const { error } = await auth.signOut();
 
       if (error) {
-        toast.error("Could not sign out");
+        toast.error("Sign-out failed. Please try again.");
         return;
       }
 
@@ -162,10 +165,10 @@
       </Sidebar.GroupContent>
     </Sidebar.Group>
     <Sidebar.Group>
-      <Sidebar.GroupLabel>Your Collections</Sidebar.GroupLabel>
+      <Sidebar.GroupLabel>Your collections</Sidebar.GroupLabel>
       <Sidebar.GroupAction onclick={() => (isCreateCollectionDialogOpen = true)}>
         <PlusIcon />
-        <span class="sr-only">Create Collection</span>
+        <span class="sr-only">Create collection</span>
       </Sidebar.GroupAction>
       <Sidebar.GroupContent>
         <Sidebar.Menu>
@@ -231,20 +234,20 @@
             <DropdownMenu.Group>
               <DropdownMenu.Item onclick={handleUpdateProfileDialogOpen}>
                 <UserCogIcon />
-                My Profile
+                Profile
               </DropdownMenu.Item>
               <DropdownMenu.Item onclick={toggleMode}>
                 <SunIcon class="scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90" />
                 <MoonIcon
                   class="absolute scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0" />
-                Toggle Theme
+                Toggle theme
               </DropdownMenu.Item>
             </DropdownMenu.Group>
             <DropdownMenu.Separator />
             <DropdownMenu.Group>
               <DropdownMenu.Item onclick={async () => await goto(resolve("/"))}>
                 <LinkIcon />
-                Homepage
+                Home page
               </DropdownMenu.Item>
             </DropdownMenu.Group>
             <DropdownMenu.Separator />
@@ -255,7 +258,7 @@
                 {:else}
                   <LogOutIcon />
                 {/if}
-                Sign Out
+                Sign out
               </DropdownMenu.Item>
             </DropdownMenu.Group>
           </DropdownMenu.Content>
@@ -269,9 +272,7 @@
   <Dialog.Content>
     <Dialog.Header>
       <Dialog.Title>Create Collection</Dialog.Title>
-      <Dialog.Description>
-        Organize your bookmarks by topic, project, or any category you like.
-      </Dialog.Description>
+      <Dialog.Description>Group your bookmarks by topic, project, or workflow.</Dialog.Description>
     </Dialog.Header>
     <form
       id="create-collection-form"
@@ -286,11 +287,13 @@
             <Input
               type="text"
               bind:value={$createFormData.name}
-              placeholder="Enter name"
+              placeholder="Enter a name"
               {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>Give your collection a clear and descriptive name.</Form.Description>
+        <Form.Description>
+          Choose a clear name so this collection is easy to recognize.
+        </Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field form={createForm} name="description">
@@ -299,11 +302,11 @@
             <Form.Label>Description</Form.Label>
             <Textarea
               bind:value={$createFormData.description}
-              placeholder="Enter description"
+              placeholder="Enter a description"
               {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>Add context to remember what this collection contains.</Form.Description>
+        <Form.Description>Add a short description to explain what belongs here.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
     </form>
@@ -322,8 +325,8 @@
 <Dialog.Root bind:open={isUpdateProfileDialogOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Update Profile</Dialog.Title>
-      <Dialog.Description>Change how your name appears in VaultZen.</Dialog.Description>
+      <Dialog.Title>Edit Profile</Dialog.Title>
+      <Dialog.Description>Update how your name appears in VaultZen.</Dialog.Description>
     </Dialog.Header>
     <form id="update-profile-form" action="/profile" method="post" use:updateEnhance>
       <Form.Field form={updateForm} name="name">
@@ -333,11 +336,11 @@
             <Input
               type="text"
               bind:value={$updateFormData.name}
-              placeholder="Enter name"
+              placeholder="Enter your name"
               {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>This name will be displayed throughout the app.</Form.Description>
+        <Form.Description>This name will appear throughout the app.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
     </form>
@@ -347,7 +350,7 @@
         {#if $updateSubmitting}
           <Spinner />
         {/if}
-        Update Profile
+        Save Changes
       </Button>
     </Dialog.Footer>
   </Dialog.Content>

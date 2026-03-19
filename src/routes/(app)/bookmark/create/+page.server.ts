@@ -1,7 +1,8 @@
 import { eq } from "drizzle-orm";
+import { redirect, setFlash } from "sveltekit-flash-message/server";
 import { fail, superValidate } from "sveltekit-superforms";
 import { zod4 } from "sveltekit-superforms/adapters";
-import { error, redirect } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import { createBookmarkSchema } from "$lib/schemas/bookmark";
 import { db } from "$lib/server/db";
 import { bookmark, collection } from "$lib/server/db/schema";
@@ -13,11 +14,12 @@ export const actions: Actions = {
     const form = await superValidate(event, zod4(createBookmarkSchema));
 
     if (!form.valid) {
+      setFlash({ type: "error", message: "Please check the bookmark details first." }, event);
       return fail(400, { form });
     }
 
     if (!event.locals.user) {
-      return error(401, "Unauthorized");
+      return error(401, "You must be signed in to continue.");
     }
 
     const metadata = await extractMetadata(form.data.url);
@@ -42,10 +44,20 @@ export const actions: Actions = {
         .limit(1);
 
       if (existingCollection) {
-        return redirect(302, `/collection/${existingCollection.slug}`);
+        return redirect(
+          302,
+          `/collection/${existingCollection.slug}`,
+          { type: "success", message: "Bookmark created successfully." },
+          event
+        );
       }
     }
 
-    return redirect(302, "/unsorted");
+    return redirect(
+      302,
+      "/unsorted",
+      { type: "success", message: "Bookmark created successfully." },
+      event
+    );
   }
 };

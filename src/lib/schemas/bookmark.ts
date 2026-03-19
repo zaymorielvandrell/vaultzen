@@ -11,8 +11,8 @@ export const createBookmarkSchema = z.object({
 
 export const updateBookmarkSchema = createBookmarkSchema.extend({
   id: z.uuid(),
-  title: z.string().trim().min(2, "Title must be at least 2 characters."),
-  description: z.string().trim().min(2, "Description must be at least 2 characters.")
+  title: z.string().trim().min(2, "Enter at least 2 characters for the title."),
+  description: z.string().trim().min(2, "Enter at least 2 characters for the description.")
 });
 
 export const deleteBookmarkSchema = z.object({

@@ -20,7 +20,7 @@
       });
 
       if (error) {
-        toast.error("Could not sign in");
+        toast.error("Sign-in failed. Please try again.");
         return;
       }
 
@@ -37,8 +37,8 @@
 
 <Card.Root class="w-full max-w-lg">
   <Card.Header class="text-center">
-    <Card.Title class="text-xl">Welcome to VaultZen</Card.Title>
-    <Card.Description>Sign in with GitHub to save and organize your links.</Card.Description>
+    <Card.Title class="text-xl">Sign in to VaultZen</Card.Title>
+    <Card.Description>Use GitHub to save, organize, and revisit your links.</Card.Description>
   </Card.Header>
   <Card.Content>
     <Button variant="outline" size="lg" class="w-full" disabled={isSignIn} onclick={handleSignIn}>

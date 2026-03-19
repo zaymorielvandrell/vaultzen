@@ -18,5 +18,5 @@
   updateBookmarkForm={data.updateBookmarkForm}
   deleteBookmarkForm={data.deleteBookmarkForm}
   title="All Bookmarks"
-  emptyTitle="No Bookmark Yet"
-  emptyDescription="Save your first link to get started." />
+  emptyTitle="No bookmarks yet"
+  emptyDescription="Save your first bookmark to get started." />

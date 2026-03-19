@@ -2,6 +2,7 @@
   import { superForm } from "sveltekit-superforms";
   import { zod4Client } from "sveltekit-superforms/adapters";
   import { PlusIcon } from "@lucide/svelte";
+  import { syncFlashMessage } from "$lib/client/flash";
   import AppSidebar from "$lib/components/app-sidebar.svelte";
   import { Button, buttonVariants } from "$lib/components/ui/button";
   import * as Dialog from "$lib/components/ui/dialog";
@@ -26,7 +27,8 @@
         isCreateBookmarkDialogOpen = false;
         reset({ data: { url: "", collectionId: null } });
       }
-    }
+    },
+    onUpdated: syncFlashMessage
   });
 
   const { form: formData, submitting, reset, enhance } = form;
@@ -59,7 +61,7 @@
         <div class="inline-flex w-1/2 items-center justify-end">
           <Button onclick={() => (isCreateBookmarkDialogOpen = true)}>
             <PlusIcon />
-            Add Bookmark
+            New Bookmark
           </Button>
         </div>
       </header>
@@ -73,8 +75,8 @@
 <Dialog.Root bind:open={isCreateBookmarkDialogOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Add Bookmark</Dialog.Title>
-      <Dialog.Description>Save a new link to your bookmark collection.</Dialog.Description>
+      <Dialog.Title>Create Bookmark</Dialog.Title>
+      <Dialog.Description>Save a new link to one of your collections.</Dialog.Description>
     </Dialog.Header>
     <form
       id="create-bookmark-form"
@@ -86,10 +88,10 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>URL</Form.Label>
-            <Input type="url" bind:value={$formData.url} placeholder="Enter URL" {...props} />
+            <Input type="url" bind:value={$formData.url} placeholder="Paste a URL" {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>Paste the URL of the webpage you want to save.</Form.Description>
+        <Form.Description>Paste the URL you want to save.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field {form} name="collectionId">
@@ -114,7 +116,7 @@
           {/snippet}
         </Form.Control>
         <Form.Description>
-          Choose a collection to organize this bookmark, or leave unsorted.
+          Choose a collection for this bookmark, or leave it unsorted.
         </Form.Description>
         <Form.FieldErrors />
       </Form.Field>
@@ -125,7 +127,7 @@
         {#if $submitting}
           <Spinner />
         {/if}
-        Add Bookmark
+        Create Bookmark
       </Button>
     </Dialog.Footer>
   </Dialog.Content>

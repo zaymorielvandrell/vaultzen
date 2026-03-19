@@ -8,8 +8,7 @@
     <div class="max-w-xs">
       <a href={resolve("/")} class="text-xl font-semibold tracking-tight">VaultZen</a>
       <p class="mt-4 mb-6 text-sm text-muted-foreground">
-        Save and organize the web. Boost your productivity and centralize your information
-        management today.
+        Save and organize the web with a calmer, cleaner bookmark workflow.
       </p>
       <Button
         href="https://github.com/zaymorielvandrell/vaultzen"

@@ -12,9 +12,18 @@ declare global {
   >;
 
   namespace App {
+    interface Flash {
+      type: "success" | "error";
+      message: string;
+    }
+
     interface Locals {
       user?: User;
       session?: Session;
+    }
+
+    interface PageData {
+      flash?: Flash;
     }
 
     // interface Error {}

@@ -6,6 +6,7 @@
   import { zod4Client } from "sveltekit-superforms/adapters";
   import { ChevronDownIcon, CircleSlashIcon, Settings2Icon, Trash2Icon } from "@lucide/svelte";
   import { resolve } from "$app/paths";
+  import { syncFlashMessage } from "$lib/client/flash";
   import * as AlertDialog from "$lib/components/ui/alert-dialog";
   import * as Avatar from "$lib/components/ui/avatar";
   import { badgeVariants } from "$lib/components/ui/badge";
@@ -69,7 +70,8 @@
       if (result.type === "redirect") {
         isUpdateBookmarkDialogOpen = false;
       }
-    }
+    },
+    onUpdated: syncFlashMessage
   });
 
   const {
@@ -87,7 +89,8 @@
       if (result.type === "redirect") {
         isDeleteBookmarkDialogOpen = false;
       }
-    }
+    },
+    onUpdated: syncFlashMessage
   });
 
   const {
@@ -134,7 +137,8 @@
     <div>
       <h1>{title}</h1>
       <p class="text-muted-foreground">
-        You have {hasBookmarks ? bookmarks.length : 0} bookmark(s) saved.
+        You have {hasBookmarks ? bookmarks.length : 0}
+        {hasBookmarks && bookmarks.length === 1 ? " bookmark" : " bookmarks"} saved.
       </p>
     </div>
   {/if}
@@ -176,14 +180,14 @@
                       handleUpdateBookmarkDialogOpen(bookmark);
                     }}>
                     <Settings2Icon />
-                    <span class="sr-only">Update Bookmark</span>
+                    <span class="sr-only">Edit bookmark</span>
                   </Button>
                   <DropdownMenu.Root>
                     <DropdownMenu.Trigger>
                       {#snippet child({ props })}
                         <Button {...props} variant="outline" size="icon-sm">
                           <ChevronDownIcon />
-                          <span class="sr-only">Manage Bookmark</span>
+                          <span class="sr-only">Manage bookmark</span>
                         </Button>
                       {/snippet}
                     </DropdownMenu.Trigger>
@@ -230,8 +234,8 @@
 <Dialog.Root bind:open={isUpdateBookmarkDialogOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Update Bookmark</Dialog.Title>
-      <Dialog.Description>Modify the URL, title, description, or collection.</Dialog.Description>
+      <Dialog.Title>Edit Bookmark</Dialog.Title>
+      <Dialog.Description>Update the URL, title, description, or collection.</Dialog.Description>
     </Dialog.Header>
     <form
       id="update-bookmark-form"
@@ -257,10 +261,14 @@
         <Form.Control>
           {#snippet children({ props })}
             <Form.Label>URL</Form.Label>
-            <Input type="url" bind:value={$updateFormData.url} placeholder="Enter URL" {...props} />
+            <Input
+              type="url"
+              bind:value={$updateFormData.url}
+              placeholder="Paste a URL"
+              {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>Paste the URL of the webpage you want to save.</Form.Description>
+        <Form.Description>Paste the URL you want to save.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field form={updateForm} name="title">
@@ -270,11 +278,11 @@
             <Input
               type="text"
               bind:value={$updateFormData.title}
-              placeholder="Enter title"
+              placeholder="Enter a title"
               {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>A title to help you identify this bookmark.</Form.Description>
+        <Form.Description>Use a clear title so this bookmark is easy to find.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field form={updateForm} name="description">
@@ -283,11 +291,11 @@
             <Form.Label>Description</Form.Label>
             <Textarea
               bind:value={$updateFormData.description}
-              placeholder="Enter description"
+              placeholder="Enter a description"
               {...props} />
           {/snippet}
         </Form.Control>
-        <Form.Description>Add notes or context about this webpage.</Form.Description>
+        <Form.Description>Add context so you remember why you saved it.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field form={updateForm} name="collectionId">
@@ -312,7 +320,7 @@
           {/snippet}
         </Form.Control>
         <Form.Description>
-          Choose a collection to organize this bookmark, or leave unsorted.
+          Choose a collection for this bookmark, or leave it unsorted.
         </Form.Description>
         <Form.FieldErrors />
       </Form.Field>
@@ -323,7 +331,7 @@
         {#if $updateSubmitting}
           <Spinner />
         {/if}
-        Update Bookmark
+        Save Changes
       </Button>
     </Dialog.Footer>
   </Dialog.Content>
@@ -332,9 +340,9 @@
 <AlertDialog.Root bind:open={isDeleteBookmarkDialogOpen}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Delete Bookmark</AlertDialog.Title>
+      <AlertDialog.Title>Delete bookmark</AlertDialog.Title>
       <AlertDialog.Description>
-        This bookmark will be permanently deleted and cannot be recovered.
+        This bookmark will be permanently deleted and cannot be restored.
       </AlertDialog.Description>
     </AlertDialog.Header>
     <form id="delete-bookmark-form" action="/bookmark/delete" method="post" use:deleteEnhance>

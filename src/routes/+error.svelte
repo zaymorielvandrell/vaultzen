@@ -14,17 +14,17 @@
         <HatGlassesIcon />
       </Empty.Media>
       <Empty.Title>
-        {page.status} • {isNotFound ? "Page Not Found" : "Something Went Wrong"}
+        {page.status} • {isNotFound ? "Page not found" : "Something went wrong"}
       </Empty.Title>
       <Empty.Description>
         {isNotFound
           ? "The page you requested does not exist or may have been moved."
-          : (page.error?.message ?? "An unexpected error occurred. Please try again.")}
+          : (page.error?.message ?? "An unexpected error occurred. Please try again later.")}
       </Empty.Description>
     </Empty.Header>
     <Empty.Content>
       <div class="flex items-center gap-2">
-        <Button href="/">Go Home</Button>
+        <Button href="/">Go home</Button>
         <Button href="/dashboard" variant="outline">Dashboard</Button>
       </div>
     </Empty.Content>
